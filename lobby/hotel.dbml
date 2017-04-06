@@ -1,0 +1,895 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="lobby" Class="hotelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=GABRIEL\lobbyServer;Initial Catalog=lobby;User ID=sa" SettingsObjectName="lobby.Properties.Settings" SettingsPropertyName="lobbyConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.CODIGOS_TRANSACCION" Member="CODIGOS_TRANSACCION">
+    <Type Name="CODIGOS_TRANSACCION">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="GRUPO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="SUBGRUPO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="IMP_INCLUIDO" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="TIPO" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Association Name="CT_SUBGRUPO_CODIGOS_TRANSACCION" Member="CT_SUBGRUPO" ThisKey="SUBGRUPO" OtherKey="CODIGO" Type="CT_SUBGRUPO" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.USUARIOS" Member="USUARIOS">
+    <Type Name="USUARIOS">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="APELLIDO" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="USERNAME" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="BLOQUEADO" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ADMINISTRADOR" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PASSWORD" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="ACTUALIZAR_PASSWORD" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="USUARIOS_TRANSACCIONES" Member="TRANSACCIONES" ThisKey="ID" OtherKey="USUARIO" Type="TRANSACCIONES" />
+    </Type>
+  </Table>
+  <Table Name="dbo.COT_MON_EXTR" Member="COT_MON_EXTR">
+    <Type Name="COT_MON_EXTR">
+      <Column Name="MONEDA_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FECHA_COTIZACION" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="COTIZACION" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="MONEDA_EXTRANJERA_COT_MON_EXTR" Member="MONEDA_EXTRANJERA" ThisKey="MONEDA_ID" OtherKey="ID" Type="MONEDA_EXTRANJERA" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CT_GRUPO" Member="CT_GRUPO">
+    <Type Name="CT_GRUPO">
+      <Column Name="CODIGO" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Association Name="CT_GRUPO_CT_SUBGRUPO" Member="CT_SUBGRUPO" ThisKey="CODIGO" OtherKey="GRUPO" Type="CT_SUBGRUPO" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CT_SUBGRUPO" Member="CT_SUBGRUPO">
+    <Type Name="CT_SUBGRUPO">
+      <Column Name="CODIGO" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="GRUPO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Association Name="CT_SUBGRUPO_CODIGOS_TRANSACCION" Member="CODIGOS_TRANSACCION" ThisKey="CODIGO" OtherKey="SUBGRUPO" Type="CODIGOS_TRANSACCION" />
+      <Association Name="CT_GRUPO_CT_SUBGRUPO" Member="CT_GRUPO" ThisKey="GRUPO" OtherKey="CODIGO" Type="CT_GRUPO" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DOCUMENTOS" Member="DOCUMENTOS">
+    <Type Name="DOCUMENTOS">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DOCUMENTO" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FACTURAS" Member="FACTURAS">
+    <Type Name="FACTURAS">
+      <Column Name="FECHA_DOC" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="NUMERO_DOC" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SERIE" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="COD_RESERVA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TOTAL_NETO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_BRUTO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_IVA" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="STATUS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.HABITACIONES" Member="HABITACIONES">
+    <Type Name="HABITACIONES">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TIPO" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NUMERO" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PISO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="BLOQUEADA" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="CABANA" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="OCUPADA" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="HABITACIONES_RESERVAS" Member="RESERVAS" ThisKey="ID" OtherKey="HABITACION_ID" Type="RESERVAS" />
+    </Type>
+  </Table>
+  <Table Name="dbo.HABITACIONES_TIPO" Member="HABITACIONES_TIPO">
+    <Type Name="HABITACIONES_TIPO">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MONEDA_EXTRANJERA" Member="MONEDA_EXTRANJERA">
+    <Type Name="MONEDA_EXTRANJERA">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MONEDA" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="MONEDA_EXTRANJERA_COT_MON_EXTR" Member="COT_MON_EXTR" ThisKey="ID" OtherKey="MONEDA_ID" Type="COT_MON_EXTR" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NOTAS" Member="NOTAS">
+    <Type Name="NOTAS">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RESERVA_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="COMENTARIO1" Type="System.String" DbType="VarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="COMENTARIO2" Type="System.String" DbType="VarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="COMENTARIO3" Type="System.String" DbType="VarChar(256) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PAISES" Member="PAISES">
+    <Type Name="PAISES">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CODIGO" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
+      <Column Name="PAIS" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="PAISES_PERF_DIRECCION" Member="PERF_DIRECCION" ThisKey="ID" OtherKey="PAIS" Type="PERF_DIRECCION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PARAMETROS_SISTEMA" Member="PARAMETROS_SISTEMA">
+    <Type Name="PARAMETROS_SISTEMA">
+      <Column Name="COUNTRY_MODE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SEND_CONF_EMAIL" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PROPERTY_CODE" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PATENTES" Member="PATENTES">
+    <Type Name="PATENTES">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PATENTE" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PERF_DIRECCION" Member="PERF_DIRECCION">
+    <Type Name="PERF_DIRECCION">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CALLE" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NUMERO" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PISO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="DEPARTAMENTO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="PROVINCIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LOCALIDAD" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CODIGO_POSTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PAIS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="PERF_DIRECCION_PERFILES" Member="PERFILES" ThisKey="ID" OtherKey="DIRECCION_ID" Type="PERFILES" />
+      <Association Name="PAISES_PERF_DIRECCION" Member="PAISES" ThisKey="PAIS" OtherKey="ID" Type="PAISES" IsForeignKey="true" />
+      <Association Name="PROVINCIAS_PERF_DIRECCION" Member="PROVINCIAS" ThisKey="PROVINCIA" OtherKey="ID" Type="PROVINCIAS" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PERFILES" Member="PERFILES">
+    <Type Name="PERFILES">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TIPO_DOC" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NUMERO_DOC" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="APELLIDO" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="DIRECCION_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FECHA_NAC" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="NUMERO_TARJETA" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="EXTRA" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+      <Column Name="EMAIL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ESTACIONAMIENTO" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PATENTE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="PERFILES_RESERVAS" Member="RESERVAS" ThisKey="ID" OtherKey="HUESPED_ID" Type="RESERVAS" />
+      <Association Name="PERF_DIRECCION_PERFILES" Member="PERF_DIRECCION" ThisKey="DIRECCION_ID" OtherKey="ID" Type="PERF_DIRECCION" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PROPIEDAD" Member="PROPIEDAD">
+    <Type Name="PROPIEDAD">
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DIRECCION" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="CIUDAD" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PAIS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TELEFONO" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="EMAIL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="RESPONSABLE" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="EXTRA" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PROVINCIAS" Member="PROVINCIAS">
+    <Type Name="PROVINCIAS">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PROVINCIA" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="PROVINCIAS_PERF_DIRECCION" Member="PERF_DIRECCION" ThisKey="ID" OtherKey="PROVINCIA" Type="PERF_DIRECCION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RANGOS_FISCALES" Member="RANGOS_FISCALES">
+    <Type Name="RANGOS_FISCALES">
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SERIE" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="PRIMER_NUMERO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ULTIMO_NUMERO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NUMERO_ACTUAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RESERVAS" Member="RESERVAS">
+    <Type Name="RESERVAS">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="HUESPED_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HABITACION_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TARIFA_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NOCHES" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FECHA_LLEGADA" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="FECHA_SALIDA" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="ADULTOS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NINOS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CAMA_EXTRA" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DESAYUNO" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="EXTRA" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+      <Column Name="STATUS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="RESERVAS_RESERVAS_NOCHES" Member="RESERVAS_NOCHES" ThisKey="ID" OtherKey="RESV_ID" Type="RESERVAS_NOCHES" />
+      <Association Name="RESERVAS_TRANSACCIONES" Member="TRANSACCIONES" ThisKey="ID" OtherKey="RESV_ID" Type="TRANSACCIONES" />
+      <Association Name="HABITACIONES_RESERVAS" Member="HABITACIONES" ThisKey="HABITACION_ID" OtherKey="ID" Type="HABITACIONES" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="PERFILES_RESERVAS" Member="PERFILES" ThisKey="HUESPED_ID" OtherKey="ID" Type="PERFILES" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RESERVAS_NOCHES" Member="RESERVAS_NOCHES">
+    <Type Name="RESERVAS_NOCHES">
+      <Column Name="RESV_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FECHA_RESERVA" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="STATUS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ROOM_REVENUE" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="RESERVAS_RESERVAS_NOCHES" Member="RESERVAS" ThisKey="RESV_ID" OtherKey="ID" Type="RESERVAS" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TARIFAS" Member="TARIFAS">
+    <Type Name="TARIFAS">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MONTO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="CODIGO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TRANSACCIONES" Member="TRANSACCIONES">
+    <Type Name="TRANSACCIONES">
+      <Column Name="NUM_TRANSACCION" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NUM_DOCUMENTO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SERIE" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="MONTO_NETO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MONTO_BRUTO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="IVA" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="CT_SUBGRUPO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="CT_GRUPO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="COD_TRANSACCION" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FECHA_TRANSACCION" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="HABITACION" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RESV_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="USUARIO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EXTRA" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+      <Association Name="RESERVAS_TRANSACCIONES" Member="RESERVAS" ThisKey="RESV_ID" OtherKey="ID" Type="RESERVAS" IsForeignKey="true" />
+      <Association Name="USUARIOS_TRANSACCIONES" Member="USUARIOS" ThisKey="USUARIO" OtherKey="ID" Type="USUARIOS" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.spCancelResv" Method="spCancelResv">
+    <Parameter Name="resv_id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spUpdateUserPassword" Method="spUpdateUserPassword">
+    <Parameter Name="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="newPassword" Type="System.String" DbType="VarChar(25)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCheckInGuest" Method="spCheckInGuest">
+    <Parameter Name="resv_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="habitacion_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="tarifa_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="desayuno" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="extra" Type="System.String" DbType="VarChar(256)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCheckOutGuest" Method="spCheckOutGuest">
+    <Parameter Name="resv_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="habitacion_id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateCTGroup" Method="spCreateCTGroup">
+    <Parameter Name="codigo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(25)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateCTSubgroup" Method="spCreateCTSubgroup">
+    <Parameter Name="codigo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="grupo" Type="System.String" DbType="VarChar(5)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateFiscalDoc" Method="spCreateFiscalDoc">
+    <Parameter Name="fecha" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="numDoc" Type="System.Int32" DbType="Int" />
+    <Parameter Name="serie" Type="System.String" DbType="VarChar(4)" />
+    <Parameter Name="codResv" Type="System.Int32" DbType="Int" />
+    <Parameter Name="totNeto" Type="System.Double" DbType="Float" />
+    <Parameter Name="totBruto" Type="System.Double" DbType="Float" />
+    <Parameter Name="totIVA" Type="System.Double" DbType="Float" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreatePayment" Method="spCreatePayment" IsComposable="true">
+    <Parameter Name="desc" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="credito" Type="System.Boolean" DbType="Bit" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="dbo.spCreateProfile" Method="spCreateProfile">
+    <Parameter Name="tipoDoc" Type="System.Int32" DbType="Int" />
+    <Parameter Name="nro_doc" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="apellido" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="nombre" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="email" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="direccion" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fecha_nac" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="nro_tarjeta" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="extra" Type="System.String" DbType="VarChar(256)" />
+    <Parameter Name="estacionamiento" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="patente" Type="System.Int32" DbType="Int" />
+    <Parameter Name="profileID" Type="System.String" DbType="VarChar(5)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateProfileAddress" Method="spCreateProfileAddress">
+    <Parameter Name="calle" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="numero" Type="System.Int32" DbType="Int" />
+    <Parameter Name="piso" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="departamento" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="provincia" Type="System.Int32" DbType="Int" />
+    <Parameter Name="localidad" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="codigo_postal" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pais" Type="System.Int32" DbType="Int" />
+    <Parameter Name="addrID" Type="System.String" DbType="VarChar(5)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateProfileLicencePlate" Method="spCreateProfileLicencePlate">
+    <Parameter Name="patente" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="patente_id" Type="System.String" DbType="VarChar(5)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateRate" Method="spCreateRate">
+    <Parameter Name="codigo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="nombre" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="monto" Type="System.Double" DbType="Float" />
+    <Parameter Name="desc" Type="System.String" DbType="VarChar(256)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateReservationNights" Method="spCreateReservationNights">
+    <Parameter Name="resvID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="resvDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="status" Type="System.Int32" DbType="Int" />
+    <Parameter Name="roomRevenue" Type="System.Double" DbType="Float" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateRoom" Method="spCreateRoom">
+    <Parameter Name="tipo" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numero" Type="System.Int32" DbType="Int" />
+    <Parameter Name="piso" Type="System.Int32" DbType="Int" />
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="cabana" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="bloqueada" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateRoomRate" Method="spCreateRoomRate">
+    <Parameter Name="desc" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="price" Type="System.Double" DbType="Float" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateRoomType" Method="spCreateRoomType">
+    <Parameter Name="desc" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateUser" Method="spCreateUser">
+    <Parameter Name="nombre" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="apellido" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="username" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="password" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="admin" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spGetProfAddrID" Method="spGetProfAddrID">
+    <Parameter Name="calle" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="numero" Type="System.Int32" DbType="Int" />
+    <Parameter Name="piso" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="departamento" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="provincia" Type="System.Int32" DbType="Int" />
+    <Parameter Name="addrID" Type="System.String" DbType="VarChar(5)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModCTGroup" Method="spModCTGroup">
+    <Parameter Name="codigo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(25)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModCTSubgroup" Method="spModCTSubgroup">
+    <Parameter Name="codigo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="grupo" Type="System.String" DbType="VarChar(5)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModPayment" Method="spModPayment" IsComposable="true">
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="desc" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="cred" Type="System.Boolean" DbType="Bit" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="dbo.spModProfile" Method="spModProfile">
+    <Parameter Name="profileID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="tipoDoc" Type="System.Int32" DbType="Int" />
+    <Parameter Name="nro_doc" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="apellido" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="nombre" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="email" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="direccion" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fecha_nac" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="nro_tarjeta" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="extra" Type="System.String" DbType="VarChar(256)" />
+    <Parameter Name="estacionamiento" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="patente" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModProfileAddress" Method="spModProfileAddress">
+    <Parameter Name="addrID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="calle" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="numero" Type="System.Int32" DbType="Int" />
+    <Parameter Name="piso" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="departamento" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="provincia" Type="System.Int32" DbType="Int" />
+    <Parameter Name="localidad" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="codigo_postal" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pais" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModProfileLicencePlate" Method="spModProfileLicencePlate">
+    <Parameter Name="patente_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="patente" Type="System.String" DbType="VarChar(15)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModRate" Method="spModRate">
+    <Parameter Name="codigo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="nombre" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="desc" Type="System.String" DbType="VarChar(256)" />
+    <Parameter Name="monto" Type="System.Double" DbType="Float" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModResv" Method="spModResv">
+    <Parameter Name="resv_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="habitacion_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="tarifa_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="noches" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fecha_llegada" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="fecha_salida" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="adultos" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ninos" Type="System.Int32" DbType="Int" />
+    <Parameter Name="cama_extra" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="desayuno" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="extra" Type="System.String" DbType="VarChar(256)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModResvDate" Method="spModResvDate">
+    <Parameter Name="arrival" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="resv_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="date" Type="System.String" DbType="VarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModRoom" Method="spModRoom">
+    <Parameter Name="tipo" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numero" Type="System.Int32" DbType="Int" />
+    <Parameter Name="piso" Type="System.Int32" DbType="Int" />
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="cabana" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="bloqueada" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModRoomType" Method="spModRoomType">
+    <Parameter Name="roomTypeID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModUser" Method="spModUser">
+    <Parameter Name="userName" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="name" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="lastName" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="password" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="admin" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="locked" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spRoomMove" Method="spRoomMove">
+    <Parameter Name="resvID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="roomFromID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="roomToID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spUpdateFiscalRanges" Method="spUpdateFiscalRanges">
+    <Parameter Name="serie" Type="System.String" DbType="VarChar(4)" />
+    <Parameter Name="numero" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spUpdatePropertyDetails" Method="spUpdatePropertyDetails">
+    <Parameter Name="nombre" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="direccion" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="ciudad" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="pais" Type="System.Int32" DbType="Int" />
+    <Parameter Name="telefono" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="email" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="responsable" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="extra" Type="System.String" DbType="VarChar(256)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spUpdateTransactions" Method="spUpdateTransactions">
+    <Parameter Name="numDoc" Type="System.Int32" DbType="Int" />
+    <Parameter Name="serie" Type="System.String" DbType="VarChar(4)" />
+    <Parameter Name="resvID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numTrx" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.fnGetCountry" Method="fnGetCountry" IsComposable="true">
+    <ElementType Name="fnGetCountryResult">
+      <Column Name="code" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="country" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnSearchResv" Method="fnSearchResv" IsComposable="true">
+    <Parameter Name="numero_doc" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="apellido" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="search_by_date" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="search_by_doc" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="from_date" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="to_date" Type="System.DateTime" DbType="Date" />
+    <ElementType Name="fnSearchResvResult">
+      <Column Name="RESV_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HUESPED_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NUMERO_DOC" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="DATOS_RESV" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+      <Column Name="NUMERO_HAB" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BLOQUEADA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TARIFA_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NOCHES" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FECHA_LLEGADA" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="FECHA_SALIDA" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="ADULTOS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NINOS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CAMA_EXTRA" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DESAYUNO" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="EXTRA" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+      <Column Name="STATUS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetCT" Method="fnGetCT" IsComposable="true">
+    <Parameter Name="paymentDesc" Type="System.String" DbType="VarChar(25)" />
+    <ElementType Name="fnGetCTResult">
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="subgrupo" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="grupo" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetCTGroup" Method="fnGetCTGroup" IsComposable="true">
+    <Parameter Name="codigoSG" Type="System.String" DbType="VarChar(5)" />
+    <ElementType Name="fnGetCTGroupResult">
+      <Column Name="GRUPO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetCTGroupList" Method="fnGetCTGroupList" IsComposable="true">
+    <ElementType Name="fnGetCTGroupListResult">
+      <Column Name="CODIGO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetCTGroups" Method="fnGetCTGroups" IsComposable="true">
+    <ElementType Name="fnGetCTGroupsResult">
+      <Column Name="CODIGO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetCTPaymentNum" Method="fnGetCTPaymentNum" IsComposable="true">
+    <Parameter Name="resvID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="fnGetCTPaymentNumResult">
+      <Column Name="NUMCT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetCTSubgroups" Method="fnGetCTSubgroups" IsComposable="true">
+    <ElementType Name="fnGetCTSubgroupsResult">
+      <Column Name="CODIGO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetDocType" Method="fnGetDocType" IsComposable="true">
+    <ElementType Name="fnGetDocTypeResult">
+      <Column Name="documento" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetFiscalRanges" Method="fnGetFiscalRanges" IsComposable="true">
+    <ElementType Name="fnGetFiscalRangesResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetGuestEmail" Method="fnGetGuestEmail" IsComposable="true">
+    <Parameter Name="resvID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="fnGetGuestEmailResult">
+      <Column Name="email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetGuestFromRoom" Method="fnGetGuestFromRoom" IsComposable="true">
+    <Parameter Name="roomID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="fnGetGuestFromRoomResult">
+      <Column Name="HUESPED" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetNumeroActual" Method="fnGetNumeroActual" IsComposable="true">
+    <Parameter Name="serie" Type="System.String" DbType="VarChar(4)" />
+    <ElementType Name="fnGetNumeroActualResult">
+      <Column Name="NUMACT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetPaymentList" Method="fnGetPaymentList" IsComposable="true">
+    <ElementType Name="fnGetPaymentListResult">
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="descripcion" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="credito" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetProfile" Method="fnGetProfile" IsComposable="true">
+    <Parameter Name="profID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="fnGetProfileResult">
+      <Column Name="TIPO_DOC" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NUMERO_DOC" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="APELLIDO" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="FECHA_NAC" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="NUMERO_TARJETA" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="EXTRA" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+      <Column Name="EMAIL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ESTACIONAMIENTO" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PATENTE_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PATENTE" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="DIRECCION_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CALLE" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="NUMERO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PISO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="DEPARTAMENTO" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="PROVINCIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LOCALIDAD" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CODIGO_POSTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PAIS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetPropertyDetails" Method="fnGetPropertyDetails" IsComposable="true">
+    <ElementType Name="fnGetPropertyDetailsResult">
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DIRECCION" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="CIUDAD" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PAIS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TELEFONO" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="EMAIL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="RESPONSABLE" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="EXTRA" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetProv" Method="fnGetProv" IsComposable="true">
+    <ElementType Name="fnGetProvResult">
+      <Column Name="prov" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetRate" Method="fnGetRate" IsComposable="true">
+    <Parameter Name="ratecode" Type="System.String" DbType="VarChar(5)" />
+    <ElementType Name="fnGetRateResult">
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="codigo" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="monto" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="descripcion" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetRateByID" Method="fnGetRateByID" IsComposable="true">
+    <Parameter Name="rateID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="fnGetRateByIDResult">
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="codigo" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="monto" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="descripcion" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetRateList" Method="fnGetRateList" IsComposable="true">
+    <ElementType Name="fnGetRateListResult">
+      <Column Name="codigo" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="monto" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="descripcion" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetResv" Method="fnGetResv" IsComposable="true">
+    <Parameter Name="resvID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="fnGetResvResult">
+      <Column Name="HUESPED" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="HUESPED_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HABITACION_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CAMA_EXTRA" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DESAYUNO" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ADULTOS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NINOS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LLEGADA" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="SALIDA" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="NOCHES" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TARIFA_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EXTRA" Type="System.String" DbType="VarChar(256)" CanBeNull="true" />
+      <Column Name="DIRECCION_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PATENTE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="STATUS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetResvID" Method="fnGetResvID" IsComposable="true">
+    <Parameter Name="roomNumber" Type="System.Int32" DbType="Int" />
+    <ElementType Name="fnGetResvIDResult">
+      <Column Name="RESV_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetRoom" Method="fnGetRoom" IsComposable="true">
+    <Parameter Name="roomNumber" Type="System.String" DbType="VarChar(5)" />
+    <ElementType Name="fnGetRoomResult">
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="tipo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="numero" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="piso" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="descripcion" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="bloqueada" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="cabana" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetRoomList" Method="fnGetRoomList" IsComposable="true">
+    <Parameter Name="includeOOO" Type="System.Boolean" DbType="Bit" />
+    <ElementType Name="fnGetRoomListResult">
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="tipo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="numero" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="piso" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="descripcion" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="bloqueada" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="cabana" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ocupada" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="habitacion" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetRoomNumber" Method="fnGetRoomNumber" IsComposable="true">
+    <Parameter Name="roomID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="fnGetRoomNumberResult">
+      <Column Name="number" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetRoomType" Method="fnGetRoomType" IsComposable="true">
+    <ElementType Name="fnGetRoomTypeResult">
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="descripcion" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetUser" Method="fnGetUser" IsComposable="true">
+    <Parameter Name="userName" Type="System.String" DbType="VarChar(25)" />
+    <ElementType Name="fnGetUserResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="APELLIDO" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="USERNAME" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="BLOQUEADO" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ADMINISTRADOR" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PASSWORD" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="ACTUALIZAR_PASSWORD" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetUserList" Method="fnGetUserList" IsComposable="true">
+    <ElementType Name="fnGetUserListResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="APELLIDO" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="USERNAME" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="BLOQUEADO" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ADMINISTRADOR" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PASSWORD" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="ACTUALIZAR_PASSWORD" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnGetUserPassword" Method="fnGetUserPassword" IsComposable="true">
+    <Parameter Name="username" Type="System.String" DbType="VarChar(25)" />
+    <ElementType Name="fnGetUserPasswordResult">
+      <Column Name="PASSWORD" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.fnSearchProfile" Method="fnSearchProfile" IsComposable="true">
+    <Parameter Name="numero_doc" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="apellido" Type="System.String" DbType="VarChar(25)" />
+    <ElementType Name="fnSearchProfileResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DATOS_COMPLETOS" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="NUMERO_DOC" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="APELLIDO" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spCreateCT" Method="spCreateCT">
+    <Parameter Name="codigo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="grupo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="subgrupo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="genera_IVA" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="tipo" Type="System.String" DbType="VarChar(1)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModCT" Method="spModCT">
+    <Parameter Name="codigo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="descripcion" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="grupo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="subgrupo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="genera_iva" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="tipo" Type="System.String" DbType="VarChar(1)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spUpdateSystemParameters" Method="spUpdateSystemParameters">
+    <Parameter Name="countryMode" Type="System.Int32" DbType="Int" />
+    <Parameter Name="sendConfEmail" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="propCode" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="serverName" Type="System.String" DbType="VarChar(25)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.fnLoadSystemParameters" Method="fnLoadSystemParameters" IsComposable="true">
+    <ElementType Name="fnLoadSystemParametersResult">
+      <Column Name="COUNTRY_MODE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SEND_CONF_EMAIL" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PROPERTY_CODE" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="SERVER_NAME" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spGetGenericAddress" Method="spGetGenericAddress">
+    <Parameter Name="genericAddressID" Type="System.String" DbType="VarChar(10)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spCreateReservation" Method="spCreateReservation">
+    <Parameter Name="huesped_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="tarifa_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="noches" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fecha_llegada" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="fecha_salida" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="adultos" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ninos" Type="System.Int32" DbType="Int" />
+    <Parameter Name="cama_extra" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="desayuno" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="extra" Type="System.String" DbType="VarChar(256)" />
+    <Parameter Name="resvID" Type="System.String" DbType="VarChar(5)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.fnGetTaxCT" Method="fnGetTaxCT" IsComposable="true">
+    <ElementType Name="fnGetTaxCTResult">
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="subgrupo" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="grupo" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spPostCT" Method="spPostCT">
+    <Parameter Name="montoNeto" Type="System.Double" DbType="Float" />
+    <Parameter Name="montoBruto" Type="System.Double" DbType="Float" />
+    <Parameter Name="iva" Type="System.Double" DbType="Float" />
+    <Parameter Name="subgrupo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="grupo" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="ct" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fecha" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="habitacion" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="resv_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="user" Type="System.Int32" DbType="Int" />
+    <Parameter Name="extra" Type="System.String" DbType="VarChar(256)" />
+    <Parameter Name="trxRef" Type="System.Int32" DbType="Int" />
+    <Parameter Name="insertedTrans" Type="System.String" DbType="VarChar(10)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spModPostCT" Method="spModPostCT">
+    <Parameter Name="montoNeto" Type="System.Double" DbType="Float" />
+    <Parameter Name="montoBruto" Type="System.Double" DbType="Float" />
+    <Parameter Name="iva" Type="System.Double" DbType="Float" />
+    <Parameter Name="ct" Type="System.Int32" DbType="Int" />
+    <Parameter Name="trxNum" Type="System.Int32" DbType="Int" />
+    <Parameter Name="modificaIVA" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="extra" Type="System.String" DbType="VarChar(256)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.spDelPostCT" Method="spDelPostCT">
+    <Parameter Name="trxNum" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ct" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ivaGenerado" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.fnGetCTList" Method="fnGetCTList" IsComposable="true">
+    <ElementType Name="fnGetCTListResult">
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="descripcion" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="subgrupo" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="grupo" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="generaIVA" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.spCreateFiscalRange" Method="spCreateFiscalRange">
+    <Parameter Name="serie1" Type="System.String" DbType="VarChar(4)" />
+    <Parameter Name="serie2" Type="System.String" DbType="VarChar(4)" />
+    <Parameter Name="serie3" Type="System.String" DbType="VarChar(4)" />
+    <Parameter Name="inicio1" Type="System.Int32" DbType="Int" />
+    <Parameter Name="inicio2" Type="System.Int32" DbType="Int" />
+    <Parameter Name="inicio3" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fin1" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fin2" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fin3" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
