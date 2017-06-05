@@ -788,12 +788,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EncrypterDLL\EncrypterDLL.csproj">
-      <Project>{163b426a-ba89-4dd1-bafc-7df4d47907bc}</Project>
-      <Name>EncrypterDLL</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

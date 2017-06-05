@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lobby", "lobby\Lobby.csproj", "{47E4A7DA-F161-4996-ACD3-3B5A37D1E91D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncrypterDLL", "EncrypterDLL\EncrypterDLL.csproj", "{163B426A-BA89-4DD1-BAFC-7DF4D47907BC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{47E4A7DA-F161-4996-ACD3-3B5A37D1E91D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47E4A7DA-F161-4996-ACD3-3B5A37D1E91D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47E4A7DA-F161-4996-ACD3-3B5A37D1E91D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{163B426A-BA89-4DD1-BAFC-7DF4D47907BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{163B426A-BA89-4DD1-BAFC-7DF4D47907BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{163B426A-BA89-4DD1-BAFC-7DF4D47907BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{163B426A-BA89-4DD1-BAFC-7DF4D47907BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

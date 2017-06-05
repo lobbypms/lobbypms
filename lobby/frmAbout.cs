@@ -14,6 +14,7 @@ namespace lobby
         {
             var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             label1.Text = "Lobby PMS v" + version.ToString();
+            //borrar
         }
 
         private void label2_Click(object sender, EventArgs e)
