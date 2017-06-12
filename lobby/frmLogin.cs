@@ -65,7 +65,8 @@ namespace lobby
             if (e.KeyChar == (char)Keys.Enter)
             {
                 e.Handled = true;
-                btnLogin.PerformClick();
+                //btnLogin.PerformClick();
+                pbLogIn_Click(this, null);
             }
         }
 

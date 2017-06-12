@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.IO;
+using LobbySecurity;
 #endregion
 
 namespace lobby
@@ -87,10 +88,14 @@ namespace lobby
             TimeSpan remainingLicenseDays;
             List<fnLoadSystemParametersResult> lsSysParam;
             lsSysParam = hotel.fnLoadSystemParameters().ToList();
+            //gabriel
+            //revisar que la primera vez que se busca tira error, hay que crear la carpeta si no existe
             string licensePath = @"c:\lobby\" + lsSysParam[0].PROPERTY_CODE + "\\licencias";
             string[] licenseDate = Directory.GetFiles(licensePath);
-            remainingLicenseDays = DateTime.Now - Convert.ToDateTime(decrypt(Path.GetFileNameWithoutExtension(licenseDate[0].ToString())));
-            this.Text += " - Licencia válida: " + decrypt(Path.GetFileNameWithoutExtension(licenseDate[0].ToString()));
+            //remainingLicenseDays = DateTime.Now - Convert.ToDateTime(decrypt(Path.GetFileNameWithoutExtension(licenseDate[0].ToString())));
+            remainingLicenseDays = DateTime.Now - Convert.ToDateTime(LobbySecurity.Encrypter.decrypt(globalParams.Clave, Path.GetFileNameWithoutExtension(licenseDate[0].ToString())));
+            
+            this.Text += " - Licencia válida: " + LobbySecurity.Encrypter.decrypt(globalParams.Clave, Path.GetFileNameWithoutExtension(licenseDate[0].ToString()));
 
             if (glbUserID != 1)
             {
@@ -106,38 +111,45 @@ namespace lobby
                 }
             }
         }
-        private string decrypt(string password_)
-        {
-            //Encapsular
-            //Desencriptar clave
-            byte[] encryptedKey;
-            byte[] array = Convert.FromBase64String(password_); //Arreglo donde se guarda la cadena descifrada
 
-            //cifrado mediante MD5
-            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-            encryptedKey = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(globalParams.Clave));
-            md5.Clear();
+        //borrar
+        //private string decrypt(string password_)
+        //{
+        //    //Encapsular
+        //    //Desencriptar clave
+        //    byte[] encryptedKey;
+        //    byte[] array = Convert.FromBase64String(password_); //Arreglo donde se guarda la cadena descifrada
 
-            //Descifrado mediante 3DES
-            TripleDESCryptoServiceProvider tripledes = new TripleDESCryptoServiceProvider();
-            tripledes.Key = encryptedKey;
-            tripledes.Mode = CipherMode.ECB;
-            tripledes.Padding = PaddingMode.PKCS7;
-            ICryptoTransform convertir = tripledes.CreateDecryptor();
-            byte[] resultado = convertir.TransformFinalBlock(array, 0, array.Length);
-            tripledes.Clear();
+        //    //cifrado mediante MD5
+        //    MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+        //    encryptedKey = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(globalParams.Clave));
+        //    md5.Clear();
 
-            string cadena_descifrada = UTF8Encoding.UTF8.GetString(resultado); // Obtener cadena
-            return cadena_descifrada; // Devolver cadena
-        }
+        //    //Descifrado mediante 3DES
+        //    TripleDESCryptoServiceProvider tripledes = new TripleDESCryptoServiceProvider();
+        //    tripledes.Key = encryptedKey;
+        //    tripledes.Mode = CipherMode.ECB;
+        //    tripledes.Padding = PaddingMode.PKCS7;
+        //    ICryptoTransform convertir = tripledes.CreateDecryptor();
+        //    byte[] resultado = convertir.TransformFinalBlock(array, 0, array.Length);
+        //    tripledes.Clear();
+
+        //    string cadena_descifrada = UTF8Encoding.UTF8.GetString(resultado); // Obtener cadena
+        //    return cadena_descifrada; // Devolver cadena
+        //}
+
         private void loadSystemParameters()
         {
             List<fnLoadSystemParametersResult> lsSystemParameters;
             lsSystemParameters = hotel.fnLoadSystemParameters().ToList();
 
-            globalParams.countryMode = lsSystemParameters[0].COUNTRY_MODE.Value;
-            globalParams.sendConfEmail = lsSystemParameters[0].SEND_CONF_EMAIL.Value;
-            globalParams.serverName = lsSystemParameters[0].SERVER_NAME;
+            globalParams.countryMode = Properties.Settings.Default.countryMode;
+            globalParams.sendConfEmail = Properties.Settings.Default.sendConfEmail;
+            globalParams.serverName = Properties.Settings.Default.serverName;
+            //borrar
+            //globalParams.countryMode = lsSystemParameters[0].COUNTRY_MODE.Value;
+            //globalParams.sendConfEmail = lsSystemParameters[0].SEND_CONF_EMAIL.Value;
+            //globalParams.serverName = lsSystemParameters[0].SERVER_NAME;
         }
         private void validateArrivals()
         {
