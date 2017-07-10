@@ -1,4 +1,5 @@
-﻿using System;
+﻿using lobby.Forms;
+using System;
 using System.Windows.Forms;
 
 namespace lobby
