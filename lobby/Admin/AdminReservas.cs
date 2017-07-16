@@ -36,9 +36,10 @@ namespace lobby.Admin
         {
             using (var db = new LobbyDB())
             {
+                DateTime hoy = DateTime.Today.Date;
                 return (from r in db.Reservas
                         join p in db.Perfiles on r.PerfilId equals p.Id
-                        where r.FechaLlegada < DateTime.Now &&
+                        where r.FechaLlegada < hoy &&
                         r.Status == null
                         select r).ToList();
             }
@@ -47,9 +48,10 @@ namespace lobby.Admin
         {
             using (var db = new LobbyDB())
             {
+                DateTime hoy = DateTime.Today.Date;
                 return (from r in db.Reservas
                                       join p in db.Perfiles on r.PerfilId equals p.Id
-                                      where r.FechaSalida < DateTime.Now &&
+                                      where r.FechaSalida < hoy &&
                                       r.Status == 1
                                       select r).ToList();
             }
@@ -71,10 +73,11 @@ namespace lobby.Admin
         {
             using (var db = new LobbyDB())
             {
+                DateTime hoy = DateTime.Today.Date;
                 return (from r in db.Reservas
                         join p in db.Perfiles on r.PerfilId equals p.Id
                         join t in db.Tarifas on r.TarifaID equals t.Id
-                        where r.FechaLlegada == DateTime.Now
+                        where r.FechaLlegada == hoy
                         && p.Id == r.PerfilId
                         && t.Id == r.TarifaID
                         && r.Status == null
@@ -85,10 +88,11 @@ namespace lobby.Admin
         {
             using (var db = new LobbyDB())
             {
+                DateTime hoy = DateTime.Today.Date;
                 return (from r in db.Reservas
                         join p in db.Perfiles on r.PerfilId equals p.Id
                         join t in db.Tarifas on r.TarifaID equals t.Id
-                        where r.FechaSalida == DateTime.Now
+                        where r.FechaSalida == hoy
                         && p.Id == r.PerfilId
                         && t.Id == r.TarifaID
                         && r.Status == 1
@@ -115,7 +119,7 @@ namespace lobby.Admin
                 try
                 {
                     Reserva res = TraerPorId(_resvId);
-                    res.FechaLlegada = _fecha;
+                    res.FechaLlegada = _fecha.Date;
                     db.SaveChanges();
                 }
                 catch (Exception e)
@@ -132,7 +136,7 @@ namespace lobby.Admin
                 try
                 {
                     Model.Reserva res = TraerPorId(_resvId);
-                    res.FechaSalida = _fecha;
+                    res.FechaSalida = _fecha.Date;
                     db.SaveChanges();
                 }
                 catch (Exception e)
@@ -152,8 +156,8 @@ namespace lobby.Admin
                     reservaMod.CamaExtra = reserva.CamaExtra;
                     reservaMod.Desayuno = reserva.Desayuno;
                     reservaMod.Extra = reserva.Extra;
-                    reservaMod.FechaLlegada = reserva.FechaLlegada;
-                    reservaMod.FechaSalida = reserva.FechaSalida;
+                    reservaMod.FechaLlegada = reserva.FechaLlegada.Date;
+                    reservaMod.FechaSalida = reserva.FechaSalida.Date;
                     reservaMod.HabitacionID = reserva.HabitacionID;
                     reservaMod.Ninios = reserva.Ninios;
                     reservaMod.Noches = reserva.Noches;

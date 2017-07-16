@@ -20,6 +20,7 @@ namespace lobby.Model
         public ctSubgrupo ctSubgrupo { get; set; }
         public int CodTransaccionId { get; set; }
         public CodigoTransaccion CodigoTransaccion { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Fecha { get; set; }
         public int HabitacionId { get; set; }
         public Habitacion Habitacion { get; set; }

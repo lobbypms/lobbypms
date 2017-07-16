@@ -32,6 +32,13 @@ namespace lobby.Forms
             cmbRates.DataSource = AdminTarifas.TraerTodas();
             cmbRates.ValueMember = "Nombre";
             cmbRates.DisplayMember = "Nombre";
+            dtpDepartures.Value = DateTime.Today.AddDays(1);
+
+            nights = (dtpDepartures.Value.Date - dtpArrivals.Value.Date);
+            if(nights.Days > 1)
+                label7.Text = nights.Days.ToString() + " noches";
+            else
+                label7.Text = nights.Days.ToString() + " noche";
 
             txbAdults.Text = "1";
             txbChildren.Text = "0";
@@ -46,7 +53,9 @@ namespace lobby.Forms
             if (profID != 0)
             {
                 Perfil perfil = AdminPerfiles.TraerPorId(profID);
-                label3.Text = perfil.Nombre + " " + perfil.Apellido;
+                txbSearchProfDoc.Text = string.Empty;
+                txbSearchProfLastName.Text = string.Empty;
+                label3.Text = perfil.Nombre + " " + perfil.Apellido + ", " + perfil.NumeroDocumento;
             }
 
         }
@@ -83,13 +92,19 @@ namespace lobby.Forms
         {
             dtpDepartures.Value = dtpArrivals.Value.AddDays(1);
             nights = (dtpDepartures.Value.Date - dtpArrivals.Value.Date);
-            label7.Text = nights.Days.ToString() + " noches";
+            if(nights.Days > 1)
+                label7.Text = nights.Days.ToString() + " noches";
+            else
+                label7.Text = nights.Days.ToString() + " noche";
         }
 
         private void dtpDepartures_Leave(object sender, EventArgs e)
         {
             nights = (dtpDepartures.Value.Date - dtpArrivals.Value.Date);
-            label7.Text = nights.Days.ToString() + " noches";
+            if(nights.Days > 1)
+                label7.Text = nights.Days.ToString() + " noches";
+            else
+                label7.Text = nights.Days.ToString() + " noche";
         }
 
         private void btnCreateResv_Click(object sender, EventArgs e)
@@ -103,8 +118,8 @@ namespace lobby.Forms
                     PerfilId = profID,
                     TarifaID = cmbRates.SelectedIndex + 1,
                     Noches = nights.Days,
-                    FechaLlegada = dtpArrivals.Value,
-                    FechaSalida = dtpDepartures.Value,
+                    FechaLlegada = dtpArrivals.Value.Date,
+                    FechaSalida = dtpDepartures.Value.Date,
                     Adultos = Convert.ToInt32(txbAdults.Text),
                     Ninios = Convert.ToInt32(txbChildren.Text),
                     CamaExtra = cbExtraBed.Checked,

@@ -16,7 +16,9 @@ namespace lobby.Model
         public int TarifaID { get; set; }
         public Tarifa Tarifa { get; set; }
         public int Noches { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime FechaLlegada { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime FechaSalida { get; set; }
         public int Adultos { get; set; }
         public int Ninios { get; set; }

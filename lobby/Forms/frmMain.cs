@@ -189,6 +189,12 @@ namespace lobby.Forms
         {
             Cursor.Current = Cursors.WaitCursor;
             dgvInHouse.DataSource = AdminReservas.TraerInHouse();
+
+            dgvInHouse.Columns["Perfil"].Visible = false;
+            dgvInHouse.Columns["HabitacionId"].Visible = false;
+            dgvInHouse.Columns["Habitacion"].Visible = false;
+            dgvInHouse.Columns["TarifaId"].Visible = false;
+            dgvInHouse.Columns["Tarifa"].Visible = false;
             Cursor.Current = Cursors.Arrow;
         }
         private void loadArrivalsAndDepartures()
@@ -197,9 +203,25 @@ namespace lobby.Forms
 
             dgvArrivals.DataSource = AdminReservas.TraerLlegadas();
             dgvDepartures.DataSource = AdminReservas.TraerSalidas();
+            EsconderColumnasDGV();
 
             Cursor.Current = Cursors.Arrow;
         }
+        private void EsconderColumnasDGV()
+        {
+            dgvArrivals.Columns["Perfil"].Visible = false;
+            dgvArrivals.Columns["HabitacionId"].Visible = false;
+            dgvArrivals.Columns["Habitacion"].Visible = false;
+            dgvArrivals.Columns["TarifaId"].Visible = false;
+            dgvArrivals.Columns["Tarifa"].Visible = false;
+
+            dgvDepartures.Columns["Perfil"].Visible = false;
+            dgvDepartures.Columns["HabitacionId"].Visible = false;
+            dgvDepartures.Columns["Habitacion"].Visible = false;
+            dgvDepartures.Columns["TarifaId"].Visible = false;
+            dgvDepartures.Columns["Tarifa"].Visible = false;
+        }
+
         private void newRoomButton_Click(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
@@ -246,30 +268,6 @@ namespace lobby.Forms
         {
             flpRooms.Controls.Clear();
             loadFLPRooms();
-        }
-        public int sendQueryToDatagrid(string query_, string table_, DataGridView dgv_)
-        {
-            string connectionString = "Data Source=" + globalParams.ServerName + "\\lobbyServer;Initial Catalog=lobby;Persist Security Info=True;User ID=sa;Password=lobbypms";
-            string tableAux;
-            //string sqlQuery = "select * from dbo.perf_direcciones where id = 2";
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-
-            sCommand = new SqlCommand(query_, connection);
-            sAdapter = new SqlDataAdapter(sCommand);
-            sBuilder = new SqlCommandBuilder(sAdapter);
-            sDs = new DataSet();
-            tableAux = "dbo." + table_;
-            sAdapter.Fill(sDs, tableAux);
-            sTable = sDs.Tables[tableAux];
-
-            connection.Close();
-
-            dgv_.DataSource = sDs.Tables[tableAux];
-            dgv_.ReadOnly = false;
-            dgv_.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-            return 0;
         }
         #endregion
 
@@ -463,12 +461,14 @@ namespace lobby.Forms
             if (dgvArrivals.SelectedRows.Count != 0)
             {
                 DataGridViewRow row = this.dgvArrivals.SelectedRows[0];
+                
+                rateID = Convert.ToInt32(row.Cells["TarifaId"].Value);
+                resvID = Convert.ToInt32(row.Cells["Id"].Value);
+                resvExtra = row.Cells["Extra"].Value.ToString();
+                resvBreakfast = Convert.ToBoolean(row.Cells["Desayuno"].Value);
+                Perfil perfil = AdminPerfiles.TraerPorIdReserva(resvID);
 
-                DialogResult result = MessageBox.Show("¿Desea dar check-in al huésped " + row.Cells["HUESPED"].Value.ToString() + "?", "Check-in huésped", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                rateID = Convert.ToInt32(row.Cells["RATE_ID"].Value);
-                resvID = Convert.ToInt32(row.Cells["RES_ID"].Value);
-                resvExtra = row.Cells["COMENTARIOS"].Value.ToString();
-                resvBreakfast = Convert.ToBoolean(row.Cells["DESAYUNO"].Value);
+                DialogResult result = MessageBox.Show("¿Desea dar check-in al huésped " + perfil.Nombre + " " + perfil.Apellido + "?", "Check-in huésped", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
                 if (result == DialogResult.OK)
                 {
@@ -750,7 +750,7 @@ namespace lobby.Forms
             if (dgvArrivals.SelectedRows.Count != 0)
             {
                 DataGridViewRow row = this.dgvArrivals.SelectedRows[0];
-                resvId = Convert.ToInt32(row.Cells["RES_ID"].Value);
+                resvId = Convert.ToInt32(row.Cells["Id"].Value);
 
                 frmModResv formModResv = new frmModResv(resvId);
                 formModResv.ShowDialog();

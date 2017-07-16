@@ -79,8 +79,8 @@ namespace lobby.Forms
             reserva.HabitacionID = roomId;
             reserva.TarifaID = cmbRates.SelectedIndex + 1;
             reserva.PerfilId = perfil.Id;
-            reserva.FechaLlegada = dtpArrivalDate.Value;
-            reserva.FechaSalida = dtpDepartureDate.Value;
+            reserva.FechaLlegada = dtpArrivalDate.Value.Date;
+            reserva.FechaSalida = dtpDepartureDate.Value.Date;
             reserva.Adultos = Convert.ToInt32(txbAdults.Text);
             reserva.Ninios = Convert.ToInt32(txbChildren.Text);
             reserva.CamaExtra = cbExtraBed.Checked;

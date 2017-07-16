@@ -29,10 +29,10 @@ namespace lobby.Forms
             {
                 if (arrival)
                     //Reservas pendientes de C/I
-                    AdminReservas.ModificarFechaLlegada(reservationID, dtpNewDate.Value);
+                    AdminReservas.ModificarFechaLlegada(reservationID, dtpNewDate.Value.Date);
                 else
                     //REservas pendientes de C/O
-                    AdminReservas.ModificarFechaSalida(reservationID, dtpNewDate.Value);
+                    AdminReservas.ModificarFechaSalida(reservationID, dtpNewDate.Value.Date);
 
                 MessageBox.Show("Fecha modificada exitosamente", "Modificar fecha de reserva", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 Close();

@@ -20,10 +20,10 @@ namespace lobby.Forms
             InitializeComponent();
             lsProfiles = AdminPerfiles.TraerPorDocumentoOApellido(profDoc_, profLast_);
 
-            if (lsProfiles != null)
+            if (lsProfiles.Count > 0)
             {
                 lbSearchProf.DataSource = lsProfiles;
-                lbSearchProf.DisplayMember = "Apellido" + " " + "Nombre";
+                lbSearchProf.DisplayMember = "Apellido" ;
                 lbSearchProf.ValueMember = "Id";
                 profID = lsProfiles[lbSearchProf.SelectedIndex].Id;
             }

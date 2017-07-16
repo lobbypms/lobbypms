@@ -19,6 +19,7 @@ namespace lobby.Model
         public string Nombre { get; set; }
         public int DireccionId { get; set; }
         public Direccion Direccion { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? FechaNacimiento { get; set; }
         [StringLength(25, ErrorMessage = "El campo NUMEROTARJETA no puede tener más de 25 caracteres")]
         public string NumeroTarjeta { get; set; }

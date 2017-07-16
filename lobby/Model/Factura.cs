@@ -11,6 +11,7 @@ namespace lobby.Model
     [Table("Facturas")]
     public class Factura
     {
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime FechaDoc { get; set; }
         [Key]
         [Column(Order = 1)]
