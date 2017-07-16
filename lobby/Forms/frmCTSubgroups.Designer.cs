@@ -98,8 +98,5 @@
         private System.Windows.Forms.Button btnAddCTSubgroup;
         private System.Windows.Forms.Button btnModCTSubgroup;
         private System.Windows.Forms.DataGridView dgvCTSubgroups;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cODIGODataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dESCRIPCIONDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn gRUPODataGridViewTextBoxColumn;
     }
 }

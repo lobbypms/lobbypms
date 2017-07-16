@@ -111,6 +111,22 @@ namespace lobby.Forms
                 txbLicencePlate.Enabled = false;
         }
 
+        private void cmbProfCountry_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (countryMode == 13)
+            {
+                if (cmbProfCountry.SelectedIndex != 12)
+                {
+                    if (cmbProfProv.Items.Count > 0)
+                    {
+                        cmbProfProv.SelectedIndex = 24;
+                        txbProfLoc.Text = string.Empty;
+                        txbProfCP.Text = string.Empty;
+                    }
+                }
+            }
+        }
+
         private void rtbExtra_TextChanged(object sender, EventArgs e)
         {
             label19.Text = (256 - rtbExtra.Text.Length).ToString() + " / 256";
@@ -127,11 +143,44 @@ namespace lobby.Forms
         private void btnModProfile_Click(object sender, EventArgs e)
         {
             Perfil perfilModificado = new Perfil();
+            Direccion direccion = AdminDirecciones.TraerPorId(direccionID);
 
+            direccion.Calle = txbProfAddrStr.Text;
+            if (txbProfCP.Text != string.Empty)
+                direccion.CodigoPostal = Convert.ToInt32(txbProfCP.Text);
+            else
+                direccion.CodigoPostal = null;
+            direccion.Numero = Convert.ToInt32(txbProfAddrNum.Text);
+            direccion.Piso = txbProfAddFlo.Text;
+            direccion.Departamento = txbProfAddrDept.Text;
+
+            direccion.Localidad = txbProfLoc.Text;
+            direccion.PaisId = cmbProfCountry.SelectedIndex + 1;
+            direccion.Piso = txbProfAddFlo.Text;
+            direccion.ProvinciaId = cmbProfProv.SelectedIndex + 1;
+
+            AdminDirecciones.Modificar(direccion);
+
+            Patente patente = AdminPatentes.TraerPorId(patenteID);
+            if (patente != null)
+            {
+                patente.Descripcion = txbLicencePlate.Text;
+                AdminPatentes.Modificar(patente);
+            }
+            else if(txbLicencePlate.Text != string.Empty)
+            {
+                if ((patente = AdminPatentes.TraerPorPatente(txbLicencePlate.Text)) == null)
+                {
+                    patente = new Patente();
+                    patente.Descripcion = txbLicencePlate.Text;
+                    patenteID = AdminPatentes.Crear(patente);
+                }
+                else
+                    patenteID = patente.Id;
+            }
+            
+            perfilModificado.PatenteId = patenteID;
             perfilModificado.DireccionId = direccionID;
-            perfilModificado.Direccion.Calle = txbProfAddrStr.Text;
-            perfilModificado.Direccion.Numero = Convert.ToInt32(txbProfAddrNum.Text);
-            perfilModificado.Direccion.Piso = txbProfAddFlo.Text;
             perfilModificado.Id = profileID;
             perfilModificado.DocumentoId = cmbProfDocType.SelectedIndex + 1;
             perfilModificado.NumeroDocumento = txbProfDocNumber.Text;
@@ -142,8 +191,8 @@ namespace lobby.Forms
             perfilModificado.NumeroTarjeta = txbCreditCard.Text;
             perfilModificado.Extra = rtbExtra.Text;
             perfilModificado.Estacionamiento = cbParkingLot.Checked;
-            perfilModificado.PatenteId = patenteID;
-            //Ver qué pasa con la patente
+            
+            //seguir
             AdminPerfiles.Modificar(perfilModificado);
 
             MessageBox.Show("Perfil modificado con éxito", "Modificar perfil", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);

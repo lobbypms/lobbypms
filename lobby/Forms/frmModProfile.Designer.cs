@@ -210,6 +210,7 @@
             this.cmbProfCountry.Name = "cmbProfCountry";
             this.cmbProfCountry.Size = new System.Drawing.Size(121, 21);
             this.cmbProfCountry.TabIndex = 12;
+            this.cmbProfCountry.SelectedIndexChanged += new System.EventHandler(this.cmbProfCountry_SelectedIndexChanged);
             // 
             // label12
             // 

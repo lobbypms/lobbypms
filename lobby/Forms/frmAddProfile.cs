@@ -143,7 +143,6 @@ namespace lobby.Forms
 
             if (validateEmptyFields() != 0)
             {
-                //seguir ver excepción con campos vacíos
                 Direccion direccion = new Direccion()
                 {
                     Calle = txbProfAddrStr.Text,
@@ -170,40 +169,31 @@ namespace lobby.Forms
                     profLicenceID = AdminPatentes.Crear(patente);
                 }
                 
-                try
+                Perfil perfil = new Perfil()
                 {
-                    Perfil perfil = new Perfil()
-                    {
-                        DocumentoId = cmbProfDocType.SelectedIndex + 1,
-                        NumeroDocumento = txbProfDocNumber.Text,
-                        Apellido = txbProfLastName.Text,
-                        Nombre = txbProfName.Text,
-                        FechaNacimiento = dtpProfBirth.Value,
-                        DireccionId = profAddrID,
-                        Email = txbEMail.Text,
-                        NumeroTarjeta = txbCreditCard.Text,
-                        Extra = rtbExtra.Text,
-                        Estacionamiento = cbParkingLot.Checked,
-                        PatenteId = profLicenceID
-                    };
-
-                    
-                    if(AdminPerfiles.TraerPorDocumento(perfil.NumeroDocumento) == null)
-                    {
-                        AdminPerfiles.Crear(perfil);
-                        MessageBox.Show(null, "Perfil creado con éxito!", "PERFILES", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show(null, "El perfil ya existía!", "PERFILES", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        cleanProfileFields();
-                    }
+                    DocumentoId = cmbProfDocType.SelectedIndex + 1,
+                    NumeroDocumento = txbProfDocNumber.Text,
+                    Apellido = txbProfLastName.Text,
+                    Nombre = txbProfName.Text,
+                    FechaNacimiento = dtpProfBirth.Value,
+                    DireccionId = profAddrID,
+                    Email = txbEMail.Text,
+                    NumeroTarjeta = txbCreditCard.Text,
+                    Extra = rtbExtra.Text,
+                    Estacionamiento = cbParkingLot.Checked,
+                    PatenteId = profLicenceID
+                };
+    
+                if(AdminPerfiles.TraerPorDocumento(perfil.NumeroDocumento) == null)
+                {
+                    AdminPerfiles.Crear(perfil);
+                    MessageBox.Show(null, "Perfil creado con éxito!", "PERFILES", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    this.Close();
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message);
-                    //TODO escribir log con texto de exception
+                    MessageBox.Show(null, "El perfil ya existía!", "PERFILES", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    cleanProfileFields();
                 }
             }
         }

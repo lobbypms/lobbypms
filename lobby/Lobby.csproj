@@ -65,6 +65,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
     <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
     <Reference Include="System" />
@@ -369,6 +373,10 @@
     <Compile Include="Migrations\201707091700115_GruposYSubgrupos.Designer.cs">
       <DependentUpon>201707091700115_GruposYSubgrupos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707142254468_ModPerfiles.cs" />
+    <Compile Include="Migrations\201707142254468_ModPerfiles.Designer.cs">
+      <DependentUpon>201707142254468_ModPerfiles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\CodigoTransaccion.cs" />
     <Compile Include="Model\CotMonExtr.cs" />
@@ -583,6 +591,9 @@
     <EmbeddedResource Include="Migrations\201707091700115_GruposYSubgrupos.resx">
       <DependentUpon>201707091700115_GruposYSubgrupos.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707142254468_ModPerfiles.resx">
+      <DependentUpon>201707142254468_ModPerfiles.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\rptArrivals.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptArrivals1.cs</LastGenOutput>
@@ -635,6 +646,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="log4net.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

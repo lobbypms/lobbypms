@@ -17,7 +17,8 @@ namespace lobby.Forms
     public partial class frmMain : Form
     {
         #region GLOBAL VARS
-        int profID, addressID, patID, resvID, glbUserID;
+        int profID, addressID, patID, resvId, glbUserID;
+        int? resvStatus = null;
         bool glbUserIsAdmin;
 
         TGlobalParams globalParams = new TGlobalParams();
@@ -206,17 +207,17 @@ namespace lobby.Forms
             string[] roomNumber = clickedButton.Text.Split('\n');
 
             //Busco el ID de la reserva con el número de habitación
-            int resvId = AdminReservas.IdPorNumeroHabitacion(Convert.ToInt32(roomNumber[0]));
+            resvId = AdminReservas.IdPorNumeroHabitacion(Convert.ToInt32(roomNumber[0]));
 
             //Traigo la habitación
             Habitacion habitacion = AdminHabitaciones.TraerPorNumero(Convert.ToInt32(roomNumber[0]));
 
             if (!habitacion.Bloqueada)
             {
-                if (resvId != 0)
+                if(resvId != 0)
                 {
                     //Abrir opciones de reserva
-                    Reserva reserva = AdminReservas.TraerPorId(resvID);
+                    Reserva reserva = AdminReservas.TraerPorId(this.resvId);
 
                     frmResvOptions formResvOptions = new frmResvOptions(resvId, reserva.Status.Value, glbUserID, reserva.FechaLlegada, globalParams);
                     formResvOptions.ShowDialog();
@@ -333,46 +334,108 @@ namespace lobby.Forms
         }
         private void btnSearchResv_Click(object sender, EventArgs e)
         {
-            string sqlQuery;
             if (txbSearchResvByName.Text != "" || txbSearchResvByDoc.Text != "")
             {
-                sqlQuery = "SELECT RESV.STATUS STATUSNUM, CASE RESV.STATUS WHEN -1 THEN 'CANCELADA' WHEN 1 THEN 'CHECKED IN' " +
-                           "WHEN 0 THEN 'CHECKED OUT' ELSE 'CREADA' END STATUS,	GST.NOMBRE + ' ' + GST.APELLIDO NOMBRE_HUESPED, " +
-                           "GST.NUMERO_DOC,	CASE WHEN ISNULL(RESV.HABITACION_ID, 0) = 0 THEN 0 " +
-                           "ELSE (SELECT RM.NUMERO FROM HOTEL.DBO.HABITACIONES RM, HOTEL.DBO.RESERVAS RE WHERE " +
-                           "RE.HABITACION_ID = RM.ID AND RE.ID = RESV.ID) END HABITACION, " +
-                           "RESV.FECHA_LLEGADA,	RESV.FECHA_SALIDA, RESV.NOCHES, RESV.ADULTOS, RESV.NINOS, " +
-                           "RESV.CAMA_EXTRA, RESV.DESAYUNO, RESV.EXTRA FROM	HOTEL.DBO.RESERVAS RESV, HOTEL.DBO.PERFILES GST " +
-                           "WHERE RESV.HUESPED_ID = GST.ID AND (GST.NUMERO_DOC = '" + txbSearchResvByDoc.Text +
-                           " ' OR UPPER(GST.APELLIDO) like UPPER('" + txbSearchResvByName.Text + "'))";
+                using (var db = new LobbyDB())
+                {
+                    Cursor.Current = Cursors.WaitCursor;
+                    dgvResv.DataSource = (from r in db.Reservas
+                                          join p in db.Perfiles on r.PerfilId equals p.Id
+                                          where p.NumeroDocumento == txbSearchResvByDoc.Text || p.Apellido.ToUpper().Contains(txbSearchResvByName.Text)
+                                          && r.Status == resvStatus
+                                          select new
+                                          {
+                                              Id = r.Id,
+                                              StatusNum = r.Status,
+                                              Status = r.Status == -1 ? "Cancelada" : (r.Status == 1 ? "Checked in" : (r.Status == 0 ? "Checked out" : "Creada")),
+                                              Huesped = p.Nombre + " " + p.Apellido,
+                                              Documento = p.NumeroDocumento,
+                                              Habitacion = r.HabitacionID == null ? 0 : (from h in db.Habitaciones join rr in db.Reservas on h.Id equals rr.HabitacionID
+                                                                                         where rr.Id == r.Id select h.Numero).FirstOrDefault(),
+                                              FechaLlegada = r.FechaLlegada.Day + "/" + r.FechaLlegada.Month + "/" + r.FechaLlegada.Year,
+                                              FechaSalida = r.FechaSalida.Day + "/" + r.FechaSalida.Month + "/" + r.FechaSalida.Year,
+                                              Noches = r.Noches,
+                                              Adultos = r.Adultos,
+                                              Ninios = r.Ninios,
+                                              CamaExtra = r.CamaExtra,
+                                              Desayuno = r.Desayuno,
+                                              Extra = r.Extra
+                                          }).ToList();
+                    Cursor.Current = Cursors.Arrow;
+                }
             }
             else
             {
                 if (rbSearchResvByDate.Checked)
-                    sqlQuery = "SELECT RESV.STATUS STATUSNUM, CASE RESV.STATUS WHEN -1 THEN 'CANCELADA' WHEN 1 THEN 'CHECKED IN' " +
-                               "WHEN 0 THEN 'CHECKED OUT' ELSE 'CREADA' END STATUS,	GST.NOMBRE + ' ' + GST.APELLIDO NOMBRE_HUESPED, " +
-                               "GST.NUMERO_DOC,	CASE WHEN ISNULL(RESV.HABITACION_ID, 0) = 0 THEN 0 " +
-                               "ELSE (SELECT RM.NUMERO FROM HOTEL.DBO.HABITACIONES RM, HOTEL.DBO.RESERVAS RE WHERE " +
-                               "RE.HABITACION_ID = RM.ID AND RE.ID = RESV.ID) END HABITACION, " +
-                               "RESV.FECHA_LLEGADA,	RESV.FECHA_SALIDA, RESV.NOCHES, RESV.ADULTOS, RESV.NINOS, " +
-                               "RESV.CAMA_EXTRA, RESV.DESAYUNO, RESV.EXTRA FROM	HOTEL.DBO.RESERVAS RESV, HOTEL.DBO.PERFILES GST " +
-                               "WHERE RESV.HUESPED_ID = GST.ID AND FECHA_LLEGADA = '" + dtpSearchResvFromDate.Value.ToShortDateString() + "'";
+                {
+                    using (var db = new LobbyDB())
+                    {
+                        //seguir revisar filtros de fechas
+                        Cursor.Current = Cursors.WaitCursor;
+                        dgvResv.DataSource = (from r in db.Reservas
+                                              join p in db.Perfiles on r.PerfilId equals p.Id
+                                              where r.FechaLlegada.Year == dtpSearchResvFromDate.Value.Year
+                                              && r.FechaLlegada.Month == dtpSearchResvFromDate.Value.Month
+                                              && r.FechaLlegada.Day == dtpSearchResvFromDate.Value.Day
+                                              && r.Status == resvStatus
+                                              select new
+                                              {
+                                                  Id = r.Id,
+                                                  StatusNum = r.Status,
+                                                  Status = r.Status == -1 ? "Cancelada" : (r.Status == 1 ? "Checked in" : (r.Status == 0 ? "Checked out" : "Creada")),
+                                                  Huesped = p.Nombre + " " + p.Apellido,
+                                                  Documento = p.NumeroDocumento,
+                                                  Habitacion = r.HabitacionID == null ? 0 : (from h in db.Habitaciones
+                                                                                             join rr in db.Reservas on h.Id equals rr.HabitacionID
+                                                                                             where rr.Id == r.Id
+                                                                                             select h.Numero).FirstOrDefault(),
+                                                  FechaLlegada = r.FechaLlegada.Day + "/" + r.FechaLlegada.Month + "/" + r.FechaLlegada.Year,
+                                                  FechaSalida = r.FechaSalida.Day + "/" + r.FechaSalida.Month + "/" + r.FechaSalida.Year,
+                                                  Noches = r.Noches,
+                                                  Adultos = r.Adultos,
+                                                  Ninios = r.Ninios,
+                                                  CamaExtra = r.CamaExtra,
+                                                  Desayuno = r.Desayuno,
+                                                  Extra = r.Extra
+                                              }).ToList();
+                        Cursor.Current = Cursors.Arrow;
+                    }
+                }
                 else
-                    sqlQuery = "SELECT RESV.STATUS STATUSNUM, CASE RESV.STATUS WHEN -1 THEN 'CANCELADA' WHEN 1 THEN 'CHECKED IN' " +
-                               "WHEN 0 THEN 'CHECKED OUT' ELSE 'CREADA' END STATUS,	GST.NOMBRE + ' ' + GST.APELLIDO NOMBRE_HUESPED, " +
-                               "GST.NUMERO_DOC,	CASE WHEN ISNULL(RESV.HABITACION_ID, 0) = 0 THEN 0 " +
-                               "ELSE (SELECT RM.NUMERO FROM HOTEL.DBO.HABITACIONES RM, HOTEL.DBO.RESERVAS RE WHERE " +
-                               "RE.HABITACION_ID = RM.ID AND RE.ID = RESV.ID) END HABITACION, " +
-                               "RESV.FECHA_LLEGADA,	RESV.FECHA_SALIDA, RESV.NOCHES, RESV.ADULTOS, RESV.NINOS, " +
-                               "RESV.CAMA_EXTRA, RESV.DESAYUNO, RESV.EXTRA FROM	HOTEL.DBO.RESERVAS RESV, HOTEL.DBO.PERFILES GST " +
-                               "WHERE RESV.HUESPED_ID = GST.ID AND FECHA_LLEGADA BETWEEN '" + dtpSearchResvFromDate.Value.ToShortDateString() + "' AND '" +
-                               dtpSearchResvToDate.Value.ToShortDateString() + "'";
+                {
+                    using (var db = new LobbyDB())
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        dgvResv.DataSource = (from r in db.Reservas
+                                              join p in db.Perfiles on r.PerfilId equals p.Id
+                                              where (r.FechaLlegada.Year >= dtpSearchResvFromDate.Value.Year && r.FechaLlegada.Year <= dtpSearchResvToDate.Value.Year)
+                                              && (r.FechaLlegada.Month >= dtpSearchResvFromDate.Value.Month && r.FechaLlegada.Month <= dtpSearchResvToDate.Value.Month)
+                                              && (r.FechaLlegada.Day >= dtpSearchResvFromDate.Value.Day && r.FechaLlegada.Day <= dtpSearchResvToDate.Value.Day)
+                                              && r.Status == resvStatus
+                                              select new
+                                              {
+                                                  Id = r.Id,
+                                                  StatusNum = r.Status,
+                                                  Status = r.Status == -1 ? "Cancelada" : (r.Status == 1 ? "Checked in" : (r.Status == 0 ? "Checked out" : "Creada")),
+                                                  Huesped = p.Nombre + " " + p.Apellido,
+                                                  Documento = p.NumeroDocumento,
+                                                  Habitacion = r.HabitacionID == null ? 0 : (from h in db.Habitaciones
+                                                                                             join rr in db.Reservas on h.Id equals rr.HabitacionID
+                                                                                             where rr.Id == r.Id
+                                                                                             select h.Numero).FirstOrDefault(),
+                                                  FechaLlegada = r.FechaLlegada.Day + "/" + r.FechaLlegada.Month + "/" + r.FechaLlegada.Year,
+                                                  FechaSalida = r.FechaSalida.Day + "/" + r.FechaSalida.Month + "/" + r.FechaSalida.Year,
+                                                  Noches = r.Noches,
+                                                  Adultos = r.Adultos,
+                                                  Ninios = r.Ninios,
+                                                  CamaExtra = r.CamaExtra,
+                                                  Desayuno = r.Desayuno,
+                                                  Extra = r.Extra
+                                              }).ToList();
+                        Cursor.Current = Cursors.Arrow;
+                    }
+                }
             }
-
-
-            Cursor.Current = Cursors.WaitCursor;
-            sendQueryToDatagrid(sqlQuery, "RESERVAS", dgvResv);
-            Cursor.Current = Cursors.Arrow;
         }
         private void txbSearchResvByDoc_Enter(object sender, EventArgs e)
         {
@@ -462,6 +525,7 @@ namespace lobby.Forms
             dgvProfile.Columns["DocumentoId"].Visible = false;
             dgvProfile.Columns["TipoDocumento"].Visible = false;
             dgvProfile.Columns["DireccionId"].Visible = false;
+            dgvProfile.Columns["Estacionamiento"].Visible = false;
             dgvProfile.Columns["Direccion"].Visible = false;
             dgvProfile.Columns["PatenteId"].Visible = false;
             dgvProfile.Columns["Patente"].Visible = false;
@@ -517,50 +581,7 @@ namespace lobby.Forms
         }
         private void btnSearchResv_Click_1(object sender, EventArgs e)
         {
-            string sqlWhere1, sqlWhere2, sqlWhere3, sqlQuery;
 
-            // Where para documento o apellido
-            if (txbSearchResvByDoc.Text != "")
-                sqlWhere1 = " AND P.NUMERO_DOC = " + txbSearchResvByDoc.Text + " ";
-            else if (txbSearchResvByName.Text != "")
-                sqlWhere1 = " AND UPPER(P.APELLIDO) LIKE UPPER('" + txbSearchResvByName.Text + "') ";
-            else
-                sqlWhere1 = string.Empty;
-
-            // Where para fechas de llegada
-            if (rbSearchResvByDate.Checked)
-                sqlWhere2 = " AND R.FECHA_LLEGADA = '" + dtpSearchResvFromDate.Value.ToShortDateString() + "' ";
-            else
-                sqlWhere2 = " AND R.FECHA_LLEGADA BETWEEN '" + dtpSearchResvFromDate.Value.ToShortDateString() +
-                    "' AND '" + dtpSearchResvToDate.Value.ToShortDateString() + "' ";
-
-            // Where para status de reserva
-            if (rbAll.Checked)
-                sqlWhere3 = " ";
-            else if (rbCancelled.Checked)
-                sqlWhere3 = " AND R.STATUS = -1 ";
-            else if (rbCheckIn.Checked)
-                sqlWhere3 = " AND R.STATUS = 1 ";
-            else
-                sqlWhere3 = " AND R.STATUS = 0 ";
-
-            //TODO mostrar número de habitación en lugar de habitación ID
-            sqlQuery = " SELECT R.STATUS STATUSNUM, CASE R.STATUS WHEN -1 THEN 'CANCELADA' WHEN 0 THEN 'CHECKED OUT' WHEN 1 THEN 'CHECKED IN'" +
-                       " ELSE 'CREADA' END STATUS, R.ID, R.HUESPED_ID, P.NOMBRE + ' ' + P.APELLIDO HUESPED, P.NUMERO_DOC DNI, " +
-                       " ISNULL(CAST(H.NUMERO AS VARCHAR), '-') HABITACION, R.TARIFA_ID, R.NOCHES, R.FECHA_LLEGADA LLEGADA, " +
-                       " R.FECHA_SALIDA SALIDA, R.ADULTOS, R.NINOS NIÑOS, R.CAMA_EXTRA, R.DESAYUNO, R.EXTRA " +
-                       " FROM RESERVAS R LEFT JOIN HABITACIONES H ON H.ID = R.HABITACION_ID, PERFILES P WHERE P.ID = R.HUESPED_ID ";
-
-            sqlQuery = sqlQuery + sqlWhere1 + sqlWhere2 + sqlWhere3;
-
-            Cursor.Current = Cursors.WaitCursor;
-            sendQueryToDatagrid(sqlQuery, "RESERVAS", dgvResv);
-            Cursor.Current = Cursors.Arrow;
-
-            dgvResv.Columns["STATUSNUM"].Visible = false;
-            dgvResv.Columns["ID"].Visible = false;
-            dgvResv.Columns["HUESPED_ID"].Visible = false;
-            dgvResv.Columns["TARIFA_ID"].Visible = false;
         }
         private void rbSearchResvByRange_CheckedChanged_1(object sender, EventArgs e)
         {
@@ -610,11 +631,11 @@ namespace lobby.Forms
                 DataGridViewRow row = this.dgvResv.SelectedRows[0];
 
                 DialogResult result = MessageBox.Show("¿Desea dar modificar la reserva de " + row.Cells["HUESPED"].Value.ToString() + "?", "Modificar reserva", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                resvID = Convert.ToInt32(row.Cells["ID"].Value);
+                resvId = Convert.ToInt32(row.Cells["ID"].Value);
 
                 if (result == DialogResult.OK)
                 {
-                    frmModResv formModResv = new frmModResv(resvID);
+                    frmModResv formModResv = new frmModResv(resvId);
                     formModResv.ShowDialog();
                 }
             }
@@ -628,15 +649,15 @@ namespace lobby.Forms
             {
                 DateTime arrDate;
                 DataGridViewRow row = this.dgvResv.SelectedRows[0];
-                if (Convert.ToString(row.Cells["STATUSNUM"].Value) != "")
-                    status = Convert.ToInt32(row.Cells["STATUSNUM"].Value);
+                if (Convert.ToString(row.Cells["StatusNum"].Value) != "")
+                    status = Convert.ToInt32(row.Cells["StatusNum"].Value);
                 else
                     status = 2;
 
-                resvID = Convert.ToInt32(row.Cells["ID"].Value);
-                arrDate = Convert.ToDateTime(row.Cells["LLEGADA"].Value);
+                resvId = Convert.ToInt32(row.Cells["Id"].Value);
+                arrDate = Convert.ToDateTime(row.Cells["FechaLlegada"].Value);
 
-                frmResvOptions formResvOptions = new frmResvOptions(resvID, status, glbUserID, arrDate, globalParams);
+                frmResvOptions formResvOptions = new frmResvOptions(resvId, status, glbUserID, arrDate, globalParams);
                 formResvOptions.ShowDialog();
                 btnSearchResv.PerformClick();
             }
@@ -729,9 +750,9 @@ namespace lobby.Forms
             if (dgvArrivals.SelectedRows.Count != 0)
             {
                 DataGridViewRow row = this.dgvArrivals.SelectedRows[0];
-                resvID = Convert.ToInt32(row.Cells["RES_ID"].Value);
+                resvId = Convert.ToInt32(row.Cells["RES_ID"].Value);
 
-                frmModResv formModResv = new frmModResv(resvID);
+                frmModResv formModResv = new frmModResv(resvId);
                 formModResv.ShowDialog();
             }
             else
@@ -745,9 +766,9 @@ namespace lobby.Forms
             if (dgvInHouse.SelectedRows.Count != 0)
             {
                 DataGridViewRow row = this.dgvInHouse.SelectedRows[0];
-                resvID = Convert.ToInt32(row.Cells["RES_ID"].Value);
+                resvId = Convert.ToInt32(row.Cells["RES_ID"].Value);
 
-                frmModResv formModResv = new frmModResv(resvID);
+                frmModResv formModResv = new frmModResv(resvId);
                 formModResv.ShowDialog();
             }
             else
@@ -762,9 +783,9 @@ namespace lobby.Forms
             if (dgvDepartures.SelectedRows.Count != 0)
             {
                 DataGridViewRow row = this.dgvDepartures.SelectedRows[0];
-                resvID = Convert.ToInt32(row.Cells["RES_ID"].Value);
+                resvId = Convert.ToInt32(row.Cells["RES_ID"].Value);
 
-                frmModResv formModResv = new frmModResv(resvID);
+                frmModResv formModResv = new frmModResv(resvId);
                 formModResv.ShowDialog();
             }
             else
@@ -907,6 +928,26 @@ namespace lobby.Forms
         {
             frmAdminDashboard formAdminDashboard = new frmAdminDashboard();
             formAdminDashboard.ShowDialog();
+        }
+        private void rbCheckOut_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbCheckOut.Checked)
+                resvStatus = 0;
+        }
+        private void rbCancelled_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbCancelled.Checked)
+                resvStatus = -1;
+        }
+        private void rbCheckIn_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbCheckIn.Checked)
+                resvStatus = 1;
+        }
+        private void rbCreated_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbCreated.Checked)
+                resvStatus = null;
         }
         private void descargatrToolStripMenuItem_Click(object sender, EventArgs e)
         {

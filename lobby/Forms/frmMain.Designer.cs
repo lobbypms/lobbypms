@@ -56,40 +56,45 @@
             this.tabPage12 = new System.Windows.Forms.TabPage();
             this.tabControl4 = new System.Windows.Forms.TabControl();
             this.tabPage13 = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.btnModArrival = new System.Windows.Forms.Button();
             this.btnCheckIn = new System.Windows.Forms.Button();
             this.btnArrivalsRefresh = new System.Windows.Forms.Button();
             this.dgvArrivals = new System.Windows.Forms.DataGridView();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.btnInHouseRefresh = new System.Windows.Forms.Button();
-            this.btnAdvCO = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.btnModInHouseResv = new System.Windows.Forms.Button();
+            this.btnAdvCO = new System.Windows.Forms.Button();
+            this.btnInHouseRefresh = new System.Windows.Forms.Button();
             this.dgvInHouse = new System.Windows.Forms.DataGridView();
             this.tabPage14 = new System.Windows.Forms.TabPage();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.btnModDeparture = new System.Windows.Forms.Button();
             this.btnCheckOut = new System.Windows.Forms.Button();
             this.btnDeparturesRefresh = new System.Windows.Forms.Button();
             this.dgvDepartures = new System.Windows.Forms.DataGridView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.btnAddProfile = new System.Windows.Forms.Button();
             this.btnModProfile = new System.Windows.Forms.Button();
+            this.btnSearchProf = new System.Windows.Forms.Button();
             this.gbSearchProf = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txbSearchDoc = new System.Windows.Forms.TextBox();
             this.txbSearchLastName = new System.Windows.Forms.TextBox();
             this.dgvProfile = new System.Windows.Forms.DataGridView();
-            this.btnSearchProf = new System.Windows.Forms.Button();
-            this.btnAddProfile = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.btnAddResv = new System.Windows.Forms.Button();
             this.btnOptions = new System.Windows.Forms.Button();
             this.btnModResv = new System.Windows.Forms.Button();
+            this.btnSearchResv = new System.Windows.Forms.Button();
             this.gbStatus = new System.Windows.Forms.GroupBox();
             this.rbCheckIn = new System.Windows.Forms.RadioButton();
             this.rbCheckOut = new System.Windows.Forms.RadioButton();
             this.rbCancelled = new System.Windows.Forms.RadioButton();
-            this.rbAll = new System.Windows.Forms.RadioButton();
-            this.btnSearchResv = new System.Windows.Forms.Button();
+            this.rbCreated = new System.Windows.Forms.RadioButton();
             this.dgvResv = new System.Windows.Forms.DataGridView();
             this.gbGuest = new System.Windows.Forms.GroupBox();
             this.txbSearchResvByDoc = new System.Windows.Forms.TextBox();
@@ -131,25 +136,25 @@
             this.rESERVASBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.btnExit = new System.Windows.Forms.Button();
             this.fKCUENTASPERFILBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage12.SuspendLayout();
             this.tabControl4.SuspendLayout();
             this.tabPage13.SuspendLayout();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArrivals)).BeginInit();
             this.tabPage4.SuspendLayout();
+            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInHouse)).BeginInit();
             this.tabPage14.SuspendLayout();
+            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDepartures)).BeginInit();
             this.tabPage1.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.gbSearchProf.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProfile)).BeginInit();
             this.tabPage2.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.gbStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResv)).BeginInit();
             this.gbGuest.SuspendLayout();
@@ -163,11 +168,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pERFILESBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rESERVASBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fKCUENTASPERFILBindingSource)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -377,6 +377,16 @@
             this.tabPage13.Text = "Llegadas";
             this.tabPage13.UseVisualStyleBackColor = true;
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.btnModArrival);
+            this.panel1.Controls.Add(this.btnCheckIn);
+            this.panel1.Location = new System.Drawing.Point(543, 11);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(209, 50);
+            this.panel1.TabIndex = 5;
+            // 
             // btnModArrival
             // 
             this.btnModArrival.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -439,15 +449,26 @@
             this.tabPage4.Text = "En casa";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // btnInHouseRefresh
+            // panel2
             // 
-            this.btnInHouseRefresh.Location = new System.Drawing.Point(26, 19);
-            this.btnInHouseRefresh.Name = "btnInHouseRefresh";
-            this.btnInHouseRefresh.Size = new System.Drawing.Size(82, 25);
-            this.btnInHouseRefresh.TabIndex = 6;
-            this.btnInHouseRefresh.Text = "Actualizar";
-            this.btnInHouseRefresh.UseVisualStyleBackColor = true;
-            this.btnInHouseRefresh.Click += new System.EventHandler(this.btnInHouseRefresh_Click);
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.btnModInHouseResv);
+            this.panel2.Controls.Add(this.btnAdvCO);
+            this.panel2.Location = new System.Drawing.Point(543, 11);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(209, 50);
+            this.panel2.TabIndex = 10;
+            // 
+            // btnModInHouseResv
+            // 
+            this.btnModInHouseResv.BackColor = System.Drawing.Color.Transparent;
+            this.btnModInHouseResv.Location = new System.Drawing.Point(11, 13);
+            this.btnModInHouseResv.Name = "btnModInHouseResv";
+            this.btnModInHouseResv.Size = new System.Drawing.Size(82, 25);
+            this.btnModInHouseResv.TabIndex = 7;
+            this.btnModInHouseResv.Text = "Ver";
+            this.btnModInHouseResv.UseVisualStyleBackColor = false;
+            this.btnModInHouseResv.Click += new System.EventHandler(this.btnModInHouseResv_Click);
             // 
             // btnAdvCO
             // 
@@ -460,16 +481,15 @@
             this.btnAdvCO.UseVisualStyleBackColor = false;
             this.btnAdvCO.Click += new System.EventHandler(this.btnAdvCO_Click);
             // 
-            // btnModInHouseResv
+            // btnInHouseRefresh
             // 
-            this.btnModInHouseResv.BackColor = System.Drawing.Color.Transparent;
-            this.btnModInHouseResv.Location = new System.Drawing.Point(11, 13);
-            this.btnModInHouseResv.Name = "btnModInHouseResv";
-            this.btnModInHouseResv.Size = new System.Drawing.Size(82, 25);
-            this.btnModInHouseResv.TabIndex = 7;
-            this.btnModInHouseResv.Text = "Ver";
-            this.btnModInHouseResv.UseVisualStyleBackColor = false;
-            this.btnModInHouseResv.Click += new System.EventHandler(this.btnModInHouseResv_Click);
+            this.btnInHouseRefresh.Location = new System.Drawing.Point(26, 19);
+            this.btnInHouseRefresh.Name = "btnInHouseRefresh";
+            this.btnInHouseRefresh.Size = new System.Drawing.Size(82, 25);
+            this.btnInHouseRefresh.TabIndex = 6;
+            this.btnInHouseRefresh.Text = "Actualizar";
+            this.btnInHouseRefresh.UseVisualStyleBackColor = true;
+            this.btnInHouseRefresh.Click += new System.EventHandler(this.btnInHouseRefresh_Click);
             // 
             // dgvInHouse
             // 
@@ -497,6 +517,16 @@
             this.tabPage14.TabIndex = 1;
             this.tabPage14.Text = "Salidas";
             this.tabPage14.UseVisualStyleBackColor = true;
+            // 
+            // panel3
+            // 
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel3.Controls.Add(this.btnModDeparture);
+            this.panel3.Controls.Add(this.btnCheckOut);
+            this.panel3.Location = new System.Drawing.Point(543, 11);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(209, 50);
+            this.panel3.TabIndex = 15;
             // 
             // btnModDeparture
             // 
@@ -539,6 +569,7 @@
             this.dgvDepartures.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDepartures.Location = new System.Drawing.Point(0, 67);
             this.dgvDepartures.Name = "dgvDepartures";
+            this.dgvDepartures.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvDepartures.Size = new System.Drawing.Size(758, 265);
             this.dgvDepartures.TabIndex = 14;
             // 
@@ -555,6 +586,27 @@
             this.tabPage1.Text = "Perfiles";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // panel4
+            // 
+            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel4.Controls.Add(this.btnAddProfile);
+            this.panel4.Controls.Add(this.btnModProfile);
+            this.panel4.Controls.Add(this.btnSearchProf);
+            this.panel4.Location = new System.Drawing.Point(610, 6);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(161, 94);
+            this.panel4.TabIndex = 8;
+            // 
+            // btnAddProfile
+            // 
+            this.btnAddProfile.Location = new System.Drawing.Point(29, 6);
+            this.btnAddProfile.Name = "btnAddProfile";
+            this.btnAddProfile.Size = new System.Drawing.Size(108, 26);
+            this.btnAddProfile.TabIndex = 3;
+            this.btnAddProfile.Text = "Nuevo";
+            this.btnAddProfile.UseVisualStyleBackColor = true;
+            this.btnAddProfile.Click += new System.EventHandler(this.btnAddProfile_Click_1);
+            // 
             // btnModProfile
             // 
             this.btnModProfile.Location = new System.Drawing.Point(29, 33);
@@ -564,6 +616,16 @@
             this.btnModProfile.Text = "Modificar";
             this.btnModProfile.UseVisualStyleBackColor = true;
             this.btnModProfile.Click += new System.EventHandler(this.btnModProfile_Click);
+            // 
+            // btnSearchProf
+            // 
+            this.btnSearchProf.Location = new System.Drawing.Point(29, 61);
+            this.btnSearchProf.Name = "btnSearchProf";
+            this.btnSearchProf.Size = new System.Drawing.Size(108, 26);
+            this.btnSearchProf.TabIndex = 2;
+            this.btnSearchProf.Text = "Buscar";
+            this.btnSearchProf.UseVisualStyleBackColor = true;
+            this.btnSearchProf.Click += new System.EventHandler(this.btnSearchProf_Click_1);
             // 
             // gbSearchProf
             // 
@@ -631,26 +693,6 @@
             this.dgvProfile.Size = new System.Drawing.Size(763, 255);
             this.dgvProfile.TabIndex = 6;
             // 
-            // btnSearchProf
-            // 
-            this.btnSearchProf.Location = new System.Drawing.Point(29, 61);
-            this.btnSearchProf.Name = "btnSearchProf";
-            this.btnSearchProf.Size = new System.Drawing.Size(108, 26);
-            this.btnSearchProf.TabIndex = 2;
-            this.btnSearchProf.Text = "Buscar";
-            this.btnSearchProf.UseVisualStyleBackColor = true;
-            this.btnSearchProf.Click += new System.EventHandler(this.btnSearchProf_Click_1);
-            // 
-            // btnAddProfile
-            // 
-            this.btnAddProfile.Location = new System.Drawing.Point(29, 6);
-            this.btnAddProfile.Name = "btnAddProfile";
-            this.btnAddProfile.Size = new System.Drawing.Size(108, 26);
-            this.btnAddProfile.TabIndex = 3;
-            this.btnAddProfile.Text = "Nuevo";
-            this.btnAddProfile.UseVisualStyleBackColor = true;
-            this.btnAddProfile.Click += new System.EventHandler(this.btnAddProfile_Click_1);
-            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.panel5);
@@ -665,6 +707,18 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Reservas";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel5.Controls.Add(this.btnAddResv);
+            this.panel5.Controls.Add(this.btnOptions);
+            this.panel5.Controls.Add(this.btnModResv);
+            this.panel5.Controls.Add(this.btnSearchResv);
+            this.panel5.Location = new System.Drawing.Point(568, 9);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(208, 93);
+            this.panel5.TabIndex = 11;
             // 
             // btnAddResv
             // 
@@ -696,12 +750,22 @@
             this.btnModResv.UseVisualStyleBackColor = true;
             this.btnModResv.Click += new System.EventHandler(this.btnModResv_Click);
             // 
+            // btnSearchResv
+            // 
+            this.btnSearchResv.Location = new System.Drawing.Point(3, 16);
+            this.btnSearchResv.Name = "btnSearchResv";
+            this.btnSearchResv.Size = new System.Drawing.Size(96, 28);
+            this.btnSearchResv.TabIndex = 4;
+            this.btnSearchResv.Text = "Buscar";
+            this.btnSearchResv.UseVisualStyleBackColor = true;
+            this.btnSearchResv.Click += new System.EventHandler(this.btnSearchResv_Click);
+            // 
             // gbStatus
             // 
             this.gbStatus.Controls.Add(this.rbCheckIn);
             this.gbStatus.Controls.Add(this.rbCheckOut);
             this.gbStatus.Controls.Add(this.rbCancelled);
-            this.gbStatus.Controls.Add(this.rbAll);
+            this.gbStatus.Controls.Add(this.rbCreated);
             this.gbStatus.Location = new System.Drawing.Point(385, 7);
             this.gbStatus.Name = "gbStatus";
             this.gbStatus.Size = new System.Drawing.Size(180, 96);
@@ -718,6 +782,7 @@
             this.rbCheckIn.TabIndex = 3;
             this.rbCheckIn.Text = "Check-in";
             this.rbCheckIn.UseVisualStyleBackColor = true;
+            this.rbCheckIn.CheckedChanged += new System.EventHandler(this.rbCheckIn_CheckedChanged);
             // 
             // rbCheckOut
             // 
@@ -728,6 +793,7 @@
             this.rbCheckOut.TabIndex = 1;
             this.rbCheckOut.Text = "Check-out";
             this.rbCheckOut.UseVisualStyleBackColor = true;
+            this.rbCheckOut.CheckedChanged += new System.EventHandler(this.rbCheckOut_CheckedChanged);
             // 
             // rbCancelled
             // 
@@ -738,28 +804,20 @@
             this.rbCancelled.TabIndex = 2;
             this.rbCancelled.Text = "Canceladas";
             this.rbCancelled.UseVisualStyleBackColor = true;
+            this.rbCancelled.CheckedChanged += new System.EventHandler(this.rbCancelled_CheckedChanged);
             // 
-            // rbAll
+            // rbCreated
             // 
-            this.rbAll.AutoSize = true;
-            this.rbAll.Checked = true;
-            this.rbAll.Location = new System.Drawing.Point(6, 30);
-            this.rbAll.Name = "rbAll";
-            this.rbAll.Size = new System.Drawing.Size(55, 17);
-            this.rbAll.TabIndex = 0;
-            this.rbAll.TabStop = true;
-            this.rbAll.Text = "Todas";
-            this.rbAll.UseVisualStyleBackColor = true;
-            // 
-            // btnSearchResv
-            // 
-            this.btnSearchResv.Location = new System.Drawing.Point(3, 16);
-            this.btnSearchResv.Name = "btnSearchResv";
-            this.btnSearchResv.Size = new System.Drawing.Size(96, 28);
-            this.btnSearchResv.TabIndex = 4;
-            this.btnSearchResv.Text = "Buscar";
-            this.btnSearchResv.UseVisualStyleBackColor = true;
-            this.btnSearchResv.Click += new System.EventHandler(this.btnSearchResv_Click_1);
+            this.rbCreated.AutoSize = true;
+            this.rbCreated.Checked = true;
+            this.rbCreated.Location = new System.Drawing.Point(6, 30);
+            this.rbCreated.Name = "rbCreated";
+            this.rbCreated.Size = new System.Drawing.Size(64, 17);
+            this.rbCreated.TabIndex = 0;
+            this.rbCreated.TabStop = true;
+            this.rbCreated.Text = "Creadas";
+            this.rbCreated.UseVisualStyleBackColor = true;
+            this.rbCreated.CheckedChanged += new System.EventHandler(this.rbCreated_CheckedChanged);
             // 
             // dgvResv
             // 
@@ -797,6 +855,7 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvResv.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvResv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvResv.Size = new System.Drawing.Size(763, 252);
             this.dgvResv.TabIndex = 10;
             this.dgvResv.SelectionChanged += new System.EventHandler(this.dgvResv_SelectionChanged);
@@ -1186,59 +1245,6 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.btnModArrival);
-            this.panel1.Controls.Add(this.btnCheckIn);
-            this.panel1.Location = new System.Drawing.Point(543, 11);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(209, 50);
-            this.panel1.TabIndex = 5;
-            // 
-            // panel2
-            // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.Controls.Add(this.btnModInHouseResv);
-            this.panel2.Controls.Add(this.btnAdvCO);
-            this.panel2.Location = new System.Drawing.Point(543, 11);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(209, 50);
-            this.panel2.TabIndex = 10;
-            // 
-            // panel3
-            // 
-            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel3.Controls.Add(this.btnModDeparture);
-            this.panel3.Controls.Add(this.btnCheckOut);
-            this.panel3.Location = new System.Drawing.Point(543, 11);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(209, 50);
-            this.panel3.TabIndex = 15;
-            // 
-            // panel4
-            // 
-            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel4.Controls.Add(this.btnAddProfile);
-            this.panel4.Controls.Add(this.btnModProfile);
-            this.panel4.Controls.Add(this.btnSearchProf);
-            this.panel4.Location = new System.Drawing.Point(610, 6);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(161, 94);
-            this.panel4.TabIndex = 8;
-            // 
-            // panel5
-            // 
-            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel5.Controls.Add(this.btnAddResv);
-            this.panel5.Controls.Add(this.btnOptions);
-            this.panel5.Controls.Add(this.btnModResv);
-            this.panel5.Controls.Add(this.btnSearchResv);
-            this.panel5.Location = new System.Drawing.Point(568, 9);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(208, 93);
-            this.panel5.TabIndex = 11;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1263,16 +1269,21 @@
             this.tabPage12.ResumeLayout(false);
             this.tabControl4.ResumeLayout(false);
             this.tabPage13.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvArrivals)).EndInit();
             this.tabPage4.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvInHouse)).EndInit();
             this.tabPage14.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDepartures)).EndInit();
             this.tabPage1.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
             this.gbSearchProf.ResumeLayout(false);
             this.gbSearchProf.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProfile)).EndInit();
             this.tabPage2.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
             this.gbStatus.ResumeLayout(false);
             this.gbStatus.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResv)).EndInit();
@@ -1292,11 +1303,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pERFILESBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rESERVASBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fKCUENTASPERFILBindingSource)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1346,7 +1352,7 @@
         private System.Windows.Forms.GroupBox gbStatus;
         private System.Windows.Forms.RadioButton rbCheckOut;
         private System.Windows.Forms.RadioButton rbCancelled;
-        private System.Windows.Forms.RadioButton rbAll;
+        private System.Windows.Forms.RadioButton rbCreated;
         private System.Windows.Forms.Button btnSearchResv;
         private System.Windows.Forms.DataGridView dgvResv;
         private System.Windows.Forms.GroupBox gbGuest;

@@ -37,7 +37,7 @@ namespace lobby.Forms
                 {
                     TipoId = cmbRoomType.SelectedIndex + 1,
                     Numero = Convert.ToInt32(txbRoomNumber.Text),
-                    Piso = Convert.ToInt32(txbRoomFloor.Text),
+                    Piso = txbRoomFloor.Text != string.Empty ? Convert.ToInt32(txbRoomFloor.Text) : 0,
                     Descripcion = rtbRoomDescription.Text,
                     Cabana = cbRoomIsCabin.Checked,
                     Bloqueada = cbOOO.Checked

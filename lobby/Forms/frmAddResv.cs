@@ -29,9 +29,9 @@ namespace lobby.Forms
             label7.Text = "";
             cbBreakfast.Checked = true;
 
-            cmbRates.DataSource = AdminReservas.TraerTodas();
-            cmbRates.ValueMember = "nombre";
-            cmbRates.DisplayMember = "nombre";
+            cmbRates.DataSource = AdminTarifas.TraerTodas();
+            cmbRates.ValueMember = "Nombre";
+            cmbRates.DisplayMember = "Nombre";
 
             txbAdults.Text = "1";
             txbChildren.Text = "0";
@@ -100,11 +100,11 @@ namespace lobby.Forms
             {
                 Reserva reserva = new Reserva()
                 {
-                    HuespedID = profID,
+                    PerfilId = profID,
                     TarifaID = cmbRates.SelectedIndex + 1,
                     Noches = nights.Days,
-                    FechaSalida = dtpArrivals.Value,
-                    FechaLlegada = dtpDepartures.Value,
+                    FechaLlegada = dtpArrivals.Value,
+                    FechaSalida = dtpDepartures.Value,
                     Adultos = Convert.ToInt32(txbAdults.Text),
                     Ninios = Convert.ToInt32(txbChildren.Text),
                     CamaExtra = cbExtraBed.Checked,
@@ -121,7 +121,7 @@ namespace lobby.Forms
                 frmReport formReport = new frmReport(3, resvID, DateTime.MinValue, DateTime.MinValue, 0, "");
                 formReport.ShowDialog();
                 
-                string huespedEMail = AdminPerfiles.TraerEmailPorIdReserva(resvID);
+                string huespedEMail = AdminPerfiles.TraerPorIdReserva(resvID).Email;
                 
                 if(sendConfirmationEmailFlag)
                     sendConfirmationEmail(resvID, huespedEMail, label3.Text);

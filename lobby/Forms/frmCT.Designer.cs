@@ -93,11 +93,5 @@
         private System.Windows.Forms.Button btnAddCT;
         private System.Windows.Forms.Button btnModCT;
         private System.Windows.Forms.DataGridView dgvCT;
-        private System.Windows.Forms.BindingSource lobbyDataSetBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn gRUPODataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sUBGRUPODataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dESCRIPCIONDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tIPODataGridViewTextBoxColumn;
     }
 }

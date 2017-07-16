@@ -7,11 +7,14 @@ using System.Security.Cryptography;
 using lobby.Admin;
 using lobby.Model;
 using LobbySecurity;
+using log4net;
+using System.Reflection;
 
 namespace lobby.Forms
 {
     public partial class frmLogin : Form
     {
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool userIsAdmin;
         public bool UserIsAdmin
         {
@@ -26,6 +29,7 @@ namespace lobby.Forms
 
         public frmLogin()
         {
+            log4net.Config.XmlConfigurator.Configure();
             InitializeComponent();
         }
 
@@ -92,7 +96,7 @@ namespace lobby.Forms
 
             try
             {
-                var usuario = lsUsuarios.Where(u => u.Username == txbUserName.Text).Single();
+                var usuario = lsUsuarios.Where(u => u.Username == txbUserName.Text).FirstOrDefault();
 
                 if (Encrypter.Decrypt(usuario.Password) == txbPassword.Text)
                 {
@@ -103,6 +107,7 @@ namespace lobby.Forms
                         MessageBox.Show("Su usuario fue bloqueado, contacte a su administrador", "Error al ingresar al sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         Application.Exit();
                     }
+                    logger.Info("LogIn usuario: " + usuario.Username);
                     this.Close();
                 }
                 else

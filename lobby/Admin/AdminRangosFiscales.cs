@@ -1,25 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using lobby.Model;
+using System.Reflection;
+using log4net;
 
 namespace lobby.Admin
 {
     public static class AdminRangosFiscales
     {
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static List<RangoFiscal> TraerTodos()
         {
-            LobbyDB db = new LobbyDB();
-            return db.RangosFiscales.ToList();
+            using (var db = new LobbyDB())
+            {
+                return db.RangosFiscales.ToList();
+            }
         }
-
         public static void Agregar(RangoFiscal rango)
         {
-            LobbyDB db = new LobbyDB();
-            db.RangosFiscales.Add(rango);
-            db.SaveChanges();
+            using (var db = new LobbyDB())
+            {
+                try
+                {
+                    db.RangosFiscales.Add(rango);
+                    db.SaveChanges();
+                }
+                catch (System.Exception e)
+                {
+                    logger.Fatal(e.InnerException.Message);
+                }
+            }
         }
     }
 }

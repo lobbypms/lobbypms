@@ -1,37 +1,65 @@
 ﻿using lobby.Model;
+using log4net;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace lobby.Admin
 {
     public static class AdminTiposHabitacion
     {
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         #region Methods
         public static List<TipoHabitacion> TraerTodos()
         {
-            LobbyDB db = new LobbyDB();
-            return db.HabitacionTipos.ToList();
+            using (var db = new LobbyDB())
+            {
+                return db.HabitacionTipos.ToList();
+            }
         }
         public static TipoHabitacion TraerPorId(int id)
         {
-            LobbyDB db = new LobbyDB();
-            return db.HabitacionTipos.Where(t => t.Id == id).Single();
+            using (var db = new LobbyDB())
+            {
+                return db.HabitacionTipos.Where(t => t.Id == id).FirstOrDefault();
+            }
         }
         public static int Crear(TipoHabitacion tipoHabitacion)
         {
-            LobbyDB db = new LobbyDB();
-            db.HabitacionTipos.Add(tipoHabitacion);
-            db.SaveChanges();
-            return (from t in db.HabitacionTipos
-                    orderby t.Id descending
-                    select t.Id).First();
+            using (var db = new LobbyDB())
+            {
+                try
+                {
+                    db.HabitacionTipos.Add(tipoHabitacion);
+                    db.SaveChanges();
+                    logger.Info("Crea tipo habitación: " + tipoHabitacion.Id);
+                    return (from t in db.HabitacionTipos
+                            orderby t.Id descending
+                            select t.Id).First();
+
+                }
+                catch (System.Exception e)
+                {
+                    logger.Fatal(e.InnerException.Message);
+                    return 0;
+                }
+            }
         }
         public static void Modificar(TipoHabitacion tipoHabitacion)
         {
-            LobbyDB db = new LobbyDB();
-            TipoHabitacion tipoHabitacionMod = db.HabitacionTipos.Where(t => t.Id == tipoHabitacion.Id).Single();
-            tipoHabitacionMod = tipoHabitacion;
-            db.SaveChanges();
+            using (var db = new LobbyDB())
+            {
+                try
+                {
+                    TipoHabitacion tipoHabitacionMod = db.HabitacionTipos.Where(t => t.Id == tipoHabitacion.Id).FirstOrDefault();
+                    tipoHabitacionMod = tipoHabitacion;
+                    db.SaveChanges();
+                }
+                catch (System.Exception e)
+                {
+                    logger.Fatal(e.InnerException.Message);
+                }
+            }
         }
         #endregion
     }

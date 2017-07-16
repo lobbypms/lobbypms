@@ -15,7 +15,7 @@ namespace lobby.Admin
         public static TipoDocumento TraerPorId(int id)
         {
             LobbyDB db = new LobbyDB();
-            return db.TipoDocumentos.Where(t => t.Id == id).Single();
+            return db.TipoDocumentos.Where(t => t.Id == id).FirstOrDefault();
         }
         #endregion
     }

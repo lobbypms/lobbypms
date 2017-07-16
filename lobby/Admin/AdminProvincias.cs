@@ -11,8 +11,10 @@ namespace lobby.Admin
     {
         public static List<Provincia> TraerTodas()
         {
-            LobbyDB db = new LobbyDB();
-            return db.Provincias.ToList();
+            using (var db = new LobbyDB())
+            {
+                return db.Provincias.ToList();
+            }
         }
     }
 }

@@ -1,268 +1,236 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using lobby.Model;
+using log4net;
+using System.Reflection;
 
 namespace lobby.Admin
 {
     public static class AdminReservas
     {
-        #region Propiedades
-        //TODO Devolver siempre tipo Reservas, CORREGIR
-        public class ReservasPendientes
-        {
-            public int Id { get; set; }
-            public int HabitacionId { get; set; }
-            public string Huesped { get; set; }
-            public DateTime FechaLlegada { get; set; }
-            public DateTime FechaSalida { get; set; }
-        }
-        public class TipoReservas
-        {
-            public string Huesped { get; set; }
-            public string Tarifa { get; set; }
-            public DateTime FechaLlegada { get; set; }
-            public DateTime FechaSalida { get; set; }
-            public int Adultos { get; set; }
-            public int Ninios { get; set; }
-            public bool CamaExtra { get; set; }
-            public bool Desayuno { get; set; }
-            public string Comentarios { get; set; }
-            public int ResvId { get; set; }
-            public int RateId { get; set; }
-        }
-        public class TipoReservasConDatosCompletos
-        {
-            public string Huesped { get; set; }
-            public int HuespedId { get; set; }
-            public int HabitacionId { get; set; }
-            public bool CamaExtra { get; set; }
-            public bool Desayuno { get; set; }
-            public int Adultos { get; set; }
-            public int Ninios { get; set; }
-            public DateTime FechaLlegada { get; set; }
-            public DateTime FechaSalida { get; set; }
-            public int Noches { get; set; }
-            public int TarifaId { get; set; }
-            public string Comentarios { get; set; }
-            public int? DireccionId { get; set; }
-            public int? PatenteId { get; set; }
-            public int Status { get; set; }
-        }
-        public static List<ReservasPendientes> reservasPendientes { get; set; }
-        #endregion
-
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         #region Metodos
-        public static TipoReservasConDatosCompletos TraerPorIdConDatosHuesped(int resvId)
-        {
-            LobbyDB db = new LobbyDB();
-            return (from r in db.Reservas
-                          join p in db.Perfiles on r.HuespedID equals p.Id
-                          where r.Id == resvId
-                          select new TipoReservasConDatosCompletos
-                          {
-                              Huesped = p.Nombre + " " + p.Apellido,
-                              HuespedId = p.Id,
-                              HabitacionId = r.HabitacionID.Value,
-                              CamaExtra = r.CamaExtra,
-                              Desayuno = r.Desayuno,
-                              Adultos = r.Adultos,
-                              Ninios = r.Ninios,
-                              FechaLlegada = r.FechaLlegada,
-                              FechaSalida = r.FechaSalida,
-                              Noches = r.Noches,
-                              TarifaId = r.TarifaID,
-                              Comentarios = r.Extra,
-                              DireccionId = p.DireccionId,
-                              PatenteId = p.PatenteId.Value,
-                              Status = r.Status.Value
-                           }).Single();
-        }
         public static Reserva TraerPorId(int _resvId)
         {
-            LobbyDB db = new LobbyDB();
-            return db.Reservas.Where(r => r.Id == _resvId).Single();
+            using (var db = new LobbyDB())
+            {
+                return db.Reservas.Where(r => r.Id == _resvId).FirstOrDefault();
+            }
         }
         public static Reserva TraerPorFecha(DateTime fecha, int huespedId)
         {
-            LobbyDB db = new LobbyDB();
-            return db.Reservas.Where(r => r.HuespedID == huespedId && r.FechaLlegada == fecha).Single();
+            using (var db = new LobbyDB())
+            {
+                return db.Reservas.Where(r => r.PerfilId == huespedId && r.FechaLlegada == fecha).FirstOrDefault();
+            }
         }
         public static List<Reserva> TraerTodas()
         {
-            LobbyDB db = new LobbyDB();
-            return db.Reservas.ToList();
+            using (var db = new LobbyDB())
+            {
+                return db.Reservas.ToList();
+            }
         }
-        public static List<ReservasPendientes> TraerPendientesCheckIn()
+        public static List<Reserva> TraerPendientesCheckIn()
         {
-            LobbyDB db = new LobbyDB();
-            reservasPendientes = (from r in db.Reservas
-                                  join p in db.Perfiles on r.HuespedID equals p.Id
-                                  where r.FechaLlegada < DateTime.Now &&
-                                  r.Status == null
-                                  select new ReservasPendientes
-                                  {
-                                      Id = r.Id,
-                                      HabitacionId = r.HabitacionID.Value,
-                                      Huesped = p.Nombre,
-                                      FechaLlegada = r.FechaLlegada,
-                                      FechaSalida = r.FechaSalida
-                                  }).ToList();
-            return reservasPendientes;
+            using (var db = new LobbyDB())
+            {
+                return (from r in db.Reservas
+                        join p in db.Perfiles on r.PerfilId equals p.Id
+                        where r.FechaLlegada < DateTime.Now &&
+                        r.Status == null
+                        select r).ToList();
+            }
         }
-        public static List<ReservasPendientes> TraerPendientesCheckOut()
+        public static List<Reserva> TraerPendientesCheckOut()
         {
-            LobbyDB db = new LobbyDB();
-            reservasPendientes = (from r in db.Reservas
-                                  join p in db.Perfiles on r.HuespedID equals p.Id
-                                  where r.FechaSalida < DateTime.Now &&
-                                  r.Status == 1
-                                  select new ReservasPendientes
-                                  {
-                                      Id = r.Id,
-                                      HabitacionId = r.HabitacionID.Value,
-                                      Huesped = p.Nombre,
-                                      FechaLlegada = r.FechaLlegada,
-                                      FechaSalida = r.FechaSalida
-                                  }).ToList();
-            return reservasPendientes;
+            using (var db = new LobbyDB())
+            {
+                return (from r in db.Reservas
+                                      join p in db.Perfiles on r.PerfilId equals p.Id
+                                      where r.FechaSalida < DateTime.Now &&
+                                      r.Status == 1
+                                      select r).ToList();
+            }
         }
-        public static List<TipoReservas> TraerInHouse()
+        public static List<Reserva> TraerInHouse()
         {
-            LobbyDB db = new LobbyDB();
-            return (from r in db.Reservas
-                          join p in db.Perfiles on r.HuespedID equals p.Id
-                          join t in db.Tarifas on r.TarifaID equals t.Id
-                          where p.Id == r.HuespedID
-                          && t.Id == r.TarifaID
-                          && r.Status == 1
-                          select new TipoReservas
-                          {
-                              Huesped = p.Nombre + " " + p.Apellido,
-                              Tarifa = t.Nombre,
-                              FechaLlegada = r.FechaLlegada,
-                              FechaSalida = r.FechaSalida,
-                              Adultos = r.Adultos,
-                              Ninios = r.Ninios,
-                              CamaExtra = r.CamaExtra,
-                              Desayuno = r.Desayuno,
-                              Comentarios = r.Extra,
-                              ResvId = r.Id,
-                              RateId = t.Id
-                          }).ToList();
+            using (var db = new LobbyDB())
+            {
+                return (from r in db.Reservas
+                        join p in db.Perfiles on r.PerfilId equals p.Id
+                        join t in db.Tarifas on r.TarifaID equals t.Id
+                        where p.Id == r.PerfilId
+                        && t.Id == r.TarifaID
+                        && r.Status == 1
+                        select r).ToList();
+            }
         }
-        public static List<TipoReservas> TraerLlegadas()
+        public static List<Reserva> TraerLlegadas()
         {
-            LobbyDB db = new LobbyDB();
-            return (from r in db.Reservas
-                    join p in db.Perfiles on r.HuespedID equals p.Id
-                    join t in db.Tarifas on r.TarifaID equals t.Id
-                    where r.FechaLlegada == DateTime.Now
-                    && p.Id == r.HuespedID
-                    && t.Id == r.TarifaID
-                    && r.Status == null
-                    select new TipoReservas
-                    {
-                        Huesped = p.Nombre + " " + p.Apellido,
-                        Tarifa = t.Nombre,
-                        FechaLlegada = r.FechaLlegada,
-                        FechaSalida = r.FechaSalida,
-                        Adultos = r.Adultos,
-                        Ninios = r.Ninios,
-                        CamaExtra = r.CamaExtra,
-                        Desayuno = r.Desayuno,
-                        Comentarios = r.Extra,
-                        ResvId = r.Id,
-                        RateId = t.Id
-                    }).ToList();
+            using (var db = new LobbyDB())
+            {
+                return (from r in db.Reservas
+                        join p in db.Perfiles on r.PerfilId equals p.Id
+                        join t in db.Tarifas on r.TarifaID equals t.Id
+                        where r.FechaLlegada == DateTime.Now
+                        && p.Id == r.PerfilId
+                        && t.Id == r.TarifaID
+                        && r.Status == null
+                        select r).ToList();
+            }
         }
-        public static List<TipoReservas> TraerSalidas()
+        public static List<Reserva> TraerSalidas()
         {
-            LobbyDB db = new LobbyDB();
-            return (from r in db.Reservas
-                    join p in db.Perfiles on r.HuespedID equals p.Id
-                    join t in db.Tarifas on r.TarifaID equals t.Id
-                    where r.FechaSalida == DateTime.Now
-                    && p.Id == r.HuespedID
-                    && t.Id == r.TarifaID
-                    && r.Status == 1
-                    select new TipoReservas
-                    {
-                        Huesped = p.Nombre + " " + p.Apellido,
-                        Tarifa = t.Nombre,
-                        FechaLlegada = r.FechaLlegada,
-                        FechaSalida = r.FechaSalida,
-                        Adultos = r.Adultos,
-                        Ninios = r.Ninios,
-                        CamaExtra = r.CamaExtra,
-                        Desayuno = r.Desayuno,
-                        Comentarios = r.Extra,
-                        ResvId = r.Id,
-                        RateId = t.Id
-                    }).ToList();
+            using (var db = new LobbyDB())
+            {
+                return (from r in db.Reservas
+                        join p in db.Perfiles on r.PerfilId equals p.Id
+                        join t in db.Tarifas on r.TarifaID equals t.Id
+                        where r.FechaSalida == DateTime.Now
+                        && p.Id == r.PerfilId
+                        && t.Id == r.TarifaID
+                        && r.Status == 1
+                        select r).ToList();
+            }
         }
         public static int IdPorNumeroHabitacion(int numeroHabitacion)
         {
-            LobbyDB db = new LobbyDB();
-            return db.Reservas.Where(r => r.Habitacion.Numero == numeroHabitacion).Single().Id;
+            using (var db = new LobbyDB())
+            {
+                Reserva reserva = db.Reservas.Where(r => r.Habitacion.Numero == numeroHabitacion).FirstOrDefault();
+
+                if (reserva != null)
+                    return reserva.Id;
+                else
+                    return 0;
+            }
         }
         public static void ModificarFechaLlegada(int _resvId, DateTime _fecha)
         {
             //TODO PROBAR SI FUNCIONA Y SE MODIFICA
-            LobbyDB db = new LobbyDB();
-            Reserva res = TraerPorId(_resvId);
-            res.FechaLlegada = _fecha;
-            db.SaveChanges();
+            using (var db = new LobbyDB())
+            {
+                try
+                {
+                    Reserva res = TraerPorId(_resvId);
+                    res.FechaLlegada = _fecha;
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    logger.Fatal(e.InnerException.Message);
+                }
+            }
         }
         public static void ModificarFechaSalida(int _resvId, DateTime _fecha)
         {
             //Gabriel PROBAR SI FUNCIONA Y SE MODIFICA
-            LobbyDB db = new LobbyDB();
-            Model.Reserva res = TraerPorId(_resvId);
-            res.FechaSalida = _fecha;
-            db.SaveChanges();
+            using (var db = new LobbyDB())
+            {
+                try
+                {
+                    Model.Reserva res = TraerPorId(_resvId);
+                    res.FechaSalida = _fecha;
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    logger.Fatal(e.InnerException.Message);
+                }
+            }
         }
         public static void Modificar(Reserva reserva)
         {
-            LobbyDB db = new LobbyDB();
-            Reserva reservaMod = db.Reservas.Where(r => r.Id == reserva.Id).Single();
-            reservaMod = reserva;
-            db.SaveChanges();
+            using (var db = new LobbyDB())
+            {
+                try
+                {
+                    Reserva reservaMod = db.Reservas.Where(r => r.Id == reserva.Id).FirstOrDefault();
+                    reservaMod.Adultos = reserva.Adultos;
+                    reservaMod.CamaExtra = reserva.CamaExtra;
+                    reservaMod.Desayuno = reserva.Desayuno;
+                    reservaMod.Extra = reserva.Extra;
+                    reservaMod.FechaLlegada = reserva.FechaLlegada;
+                    reservaMod.FechaSalida = reserva.FechaSalida;
+                    reservaMod.HabitacionID = reserva.HabitacionID;
+                    reservaMod.Ninios = reserva.Ninios;
+                    reservaMod.Noches = reserva.Noches;
+                    reservaMod.PerfilId = reserva.PerfilId;
+                    reservaMod.Status = reserva.Status;
+                    reservaMod.TarifaID = reserva.TarifaID;
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    logger.Fatal(e.InnerException.Message);
+                }
+            }
         }
         public static void CambiarHabitacion(int resvId, int habitacionDesdeId, int habitacionHastaId)
         {
-            LobbyDB db = new LobbyDB();
-            Habitacion habitacionDesde = db.Habitaciones.Where(h => h.Id == habitacionDesdeId).Single();
-            Habitacion habitacionHasta = db.Habitaciones.Where(h => h.Id == habitacionHastaId).Single();
-            Reserva reserva = db.Reservas.Where(r => r.Id == resvId).Single();
+            using (var db = new LobbyDB())
+            {
+                try
+                {
+                    Habitacion habitacionDesde = db.Habitaciones.Where(h => h.Id == habitacionDesdeId).FirstOrDefault();
+                    Habitacion habitacionHasta = db.Habitaciones.Where(h => h.Id == habitacionHastaId).FirstOrDefault();
+                    Reserva reserva = db.Reservas.Where(r => r.Id == resvId).FirstOrDefault();
 
-            habitacionDesde.Ocupada = false;
-            habitacionHasta.Ocupada = true;
-            reserva.HabitacionID = habitacionHastaId;
-            db.SaveChanges();
+                    habitacionDesde.Ocupada = false;
+                    habitacionHasta.Ocupada = true;
+                    reserva.HabitacionID = habitacionHastaId;
+                    db.SaveChanges();
+                    logger.Info("Cambio de habitación: " + habitacionDesde + " -> " + habitacionHasta);
+                }
+                catch (Exception e)
+                {
+                    logger.Fatal(e.InnerException.Message);
+                }
+            }
         }
         public static int Crear(Reserva reserva)
         {
-            LobbyDB db = new LobbyDB();
-            db.Reservas.Add(reserva);
-            db.SaveChanges();
-
-            return (from r in db.Reservas
-                    orderby r.Id descending
-                    select r.Id).First();
+            using (var db = new LobbyDB())
+            {
+                try
+                {
+                    db.Reservas.Add(reserva);
+                    db.SaveChanges();
+                    logger.Info("Crea reserva: " + reserva.Id);
+                    return (from r in db.Reservas
+                            orderby r.Id descending
+                            select r.Id).First();
+                }
+                catch (Exception e)
+                {
+                    logger.Fatal(e.InnerException.Message);
+                    return 0;
+                }
+            }
         }
         public static void Cancelar(int resvId)
         {
-            LobbyDB db = new LobbyDB();
-            Reserva reserva = db.Reservas.Where(r => r.Id == resvId).Single();
-            reserva.Status = -1;
+            using (var db = new LobbyDB())
+            {
+                try
+                {
+                    Reserva reserva = db.Reservas.Where(r => r.Id == resvId).FirstOrDefault();
+                    reserva.Status = -1;
 
-            ReservaNoche reservaNoches = db.ReservasNoches.Where(rn => rn.ResvId == resvId).Single();
-            reservaNoches.Status = -1;
+                    ReservaNoche reservaNoches = db.ReservasNoches.Where(rn => rn.ResvId == resvId).FirstOrDefault();
+                    if(reservaNoches != null)
+                        reservaNoches.Status = -1;
 
-            db.SaveChanges();
+                    db.SaveChanges();
+                    logger.Info("Cancela reserva: " + reserva.Id);
+                }
+                catch (Exception e)
+                {
+                    logger.Fatal(e.InnerException.Message);
+                }
+            }
         }
         #endregion
     }

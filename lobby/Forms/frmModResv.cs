@@ -9,13 +9,13 @@ namespace lobby.Forms
 {
     public partial class frmModResv : Form
     {
-        int resvID, roomID;
+        int resvId, roomId;
         TimeSpan nights;
 
         public frmModResv(int resvID_)
         {
             InitializeComponent();
-            resvID = resvID_;
+            resvId = resvID_;
         }
 
         private void frmModResv_Load(object sender, EventArgs e)
@@ -31,14 +31,15 @@ namespace lobby.Forms
             cmbRates.ValueMember = "nombre";
             cmbRates.DisplayMember = "nombre";
 
-            loadResvFields(resvID);
+            loadResvFields(resvId);
         }
 
         private void loadResvFields(int reservationID)
         {
             Reserva reserva = AdminReservas.TraerPorId(reservationID);
+            Perfil perfil = AdminPerfiles.TraerPorId(reserva.PerfilId);
 
-            label3.Text = reserva.Perfil.Nombre + " " + reserva.Perfil.Apellido;
+            label3.Text = perfil.Nombre + " " + perfil.Apellido;
             label7.Text = reserva.Noches + " noches";
 
             cbBreakfast.Checked = reserva.Desayuno;
@@ -55,8 +56,8 @@ namespace lobby.Forms
 
             if (reserva.HabitacionID != null)
             {
-                string numeroHabitacion = 
-                txbRoom.Text = AdminHabitaciones.TraerPorId(roomID).Numero.ToString();
+                int numeroHabitacion = AdminHabitaciones.TraerPorId(reserva.HabitacionID.Value).Numero;
+                txbRoom.Text = numeroHabitacion.ToString();
             }
 
             if (reserva.Status == 1)
@@ -72,10 +73,12 @@ namespace lobby.Forms
         {
             Reserva reserva = new Reserva();
             nights = (dtpDepartureDate.Value.Date - dtpArrivalDate.Value.Date);
+            Perfil perfil = AdminPerfiles.TraerPorIdReserva(resvId);
 
-            reserva.Id = resvID;
-            reserva.HabitacionID = roomID;
+            reserva.Id = resvId;
+            reserva.HabitacionID = roomId;
             reserva.TarifaID = cmbRates.SelectedIndex + 1;
+            reserva.PerfilId = perfil.Id;
             reserva.FechaLlegada = dtpArrivalDate.Value;
             reserva.FechaSalida = dtpDepartureDate.Value;
             reserva.Adultos = Convert.ToInt32(txbAdults.Text);
@@ -86,7 +89,8 @@ namespace lobby.Forms
 
             if (txbRoom.Text != "")
             {
-                roomID = AdminHabitaciones.TraerPorNumero(Convert.ToInt32(txbRoom.Text)).Id;
+                roomId = AdminHabitaciones.TraerPorNumero(Convert.ToInt32(txbRoom.Text)).Id;
+                reserva.HabitacionID = roomId;
             }
                 
             if (nights.Days > 0)
@@ -94,7 +98,7 @@ namespace lobby.Forms
                 reserva.Noches = nights.Days;
                 label7.Text = nights.Days.ToString() + " noches";
 
-                if (roomID != 0)
+                if (roomId != 0)
                     AdminReservas.Modificar(reserva);
                 else
                     reserva.HabitacionID = null;
@@ -112,13 +116,13 @@ namespace lobby.Forms
             frmRoomlist formRoomList = new frmRoomlist();
             formRoomList.ShowDialog();
             txbRoom.Text = formRoomList.RoomNumber.ToString();
-            roomID = formRoomList.RoomID;
+            roomId = formRoomList.RoomID;
         }
 
         private void btnDeleteRoom_Click(object sender, EventArgs e)
         {
             txbRoom.Text = "";
-            roomID = 0;
+            roomId = 0;
         }
 
         private void dtpArrivals_Leave(object sender, EventArgs e)

@@ -47,60 +47,21 @@ namespace lobby.Forms
         private void fillDataGrid(bool arr_)
         {
             string sqlQuery = string.Empty;
-            List<ReservasPendientes> rp;
+            List<Reserva> reservaPendiente;
 
             if (!arr_)
             {
-                //Borrar
-                //sqlQuery = "SELECT R.ID RESV_ID, R.HABITACION_ID, P.NOMBRE + ' ' + P.APELLIDO HUESPED, R.FECHA_LLEGADA, R.FECHA_SALIDA FROM RESERVAS R, PERFILES P where FORMAT(R.FECHA_SALIDA, 'dd/MM/yyyy') < CONVERT(DATETIME, '" + DateTime.Now.Date.ToShortDateString() + "', 103) AND P.ID = R.HUESPED_ID AND R.STATUS = 1";
-                rp = TraerPendientesCheckOut();
+                reservaPendiente = TraerPendientesCheckOut();
             }
             else
             {
-                //Borrar
-                //sqlQuery = "SELECT R.ID RESV_ID, R.HABITACION_ID, P.NOMBRE + ' ' + P.APELLIDO HUESPED, R.FECHA_LLEGADA, R.FECHA_SALIDA FROM RESERVAS R, PERFILES P where FORMAT(R.FECHA_LLEGADA, 'dd/MM/yyyy') < CONVERT(DATETIME, '" + DateTime.Now.Date.ToShortDateString() + "', 103) AND P.ID = R.HUESPED_ID AND R.STATUS IS NULL";
-                rp = TraerPendientesCheckIn();
+                reservaPendiente = TraerPendientesCheckIn();
             }                
 
             Cursor.Current = Cursors.WaitCursor;
-
-            //Borrar
-            //sendQueryToDatagrid(sqlQuery, "RESERVAS", dgvPendingResv);
-            //dgvPendingResv.Columns[0].Visible = false;
-            //dgvPendingResv.Columns[1].Visible = false;
-
-            dgvPendingResv.DataSource = rp;
-
+            dgvPendingResv.DataSource = reservaPendiente;
             Cursor.Current = Cursors.Arrow;
         }
-
-        //borrar
-        //public int sendQueryToDatagrid(string query_, string table_, DataGridView dgv_)
-        //{
-        //    //string connectionString = "Data Source=GABRIEL\\lobbyServer;Initial Catalog=hotel;Persist Security Info=True;User ID=sa;Password=";
-        //    string connectionString = "Data Source=" + serverName + "\\lobbyServer;Initial Catalog=lobby;Persist Security Info=True;User ID=sa;Password=lobbypms";
-        //    string tableAux;
-        //    //string sqlQuery = "select * from dbo.perf_direcciones where id = 2";
-        //    SqlConnection connection = new SqlConnection(connectionString);
-        //    connection.Open();
-
-        //    sCommand = new SqlCommand(query_, connection);
-        //    sAdapter = new SqlDataAdapter(sCommand);
-        //    sBuilder = new SqlCommandBuilder(sAdapter);
-        //    sDs = new DataSet();
-        //    //tableAux = "dbo." + table_;
-        //    tableAux = table_;
-        //    sAdapter.Fill(sDs, tableAux);
-        //    sTable = sDs.Tables[tableAux];
-
-        //    connection.Close();
-
-        //    dgv_.DataSource = sDs.Tables[tableAux];
-        //    dgv_.ReadOnly = false;
-        //    dgv_.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-        //    return 0;
-        //}
 
         private void btnChangeDate_Click(object sender, EventArgs e)
         {
@@ -112,7 +73,8 @@ namespace lobby.Forms
             if (dgvPendingResv.SelectedRows.Count != 0)
             {
                 DataGridViewRow row = dgvPendingResv.SelectedRows[0];
-                resvID = Convert.ToInt32(row.Cells["RESV_ID"].Value);
+                resvID = Convert.ToInt32(row.Cells["Id"].Value);
+
                 if(arrival)
                     prevDate = Convert.ToDateTime(row.Cells["FECHA_LLEGADA"].Value);
                 else

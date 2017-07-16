@@ -1,9 +1,6 @@
 ﻿using lobby.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace lobby.Admin
 {
@@ -11,8 +8,10 @@ namespace lobby.Admin
     {
         public static List<Propiedad> TraerTodas()
         {
-            LobbyDB db = new LobbyDB();
-            return db.Propiedad.ToList();
+            using (var db = new LobbyDB())
+            {
+                return db.Propiedad.ToList();
+            }
         }
     }
 }

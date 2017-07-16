@@ -1,12 +1,15 @@
 ﻿using lobby.Model;
+using log4net;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace lobby.Admin
 {
     public static class AdminCTSubgrupos
     {
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         #region Methods
         public static List<ctSubgrupo> TraerTodos()
         {
@@ -31,10 +34,11 @@ namespace lobby.Admin
                     db.ctSubgrupos.Add(subgrupo);
                     db.SaveChanges();
                     MessageBox.Show("Código creado con éxito", "Agregar código subgrupo CT", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    logger.Info("Agrega Subgrupo CT: " + subgrupo.Id);
                 }
                 catch (System.Exception e)
                 {
-                    MessageBox.Show(e.InnerException.Message);
+                    logger.Fatal(e.InnerException.Message);
                 }
             }
 
@@ -43,10 +47,17 @@ namespace lobby.Admin
         {
             using (LobbyDB db = new LobbyDB())
             {
-                ctSubgrupo ctSubgrupo = db.ctSubgrupos.Where(s => s.Codigo == subgrupo.Codigo).Single();
-                ctSubgrupo.Descripcion = subgrupo.Descripcion;
-                ctSubgrupo.CTGrupoId = subgrupo.CTGrupoId;
-                db.SaveChanges();
+                try
+                {
+                    ctSubgrupo ctSubgrupo = db.ctSubgrupos.Where(s => s.Codigo == subgrupo.Codigo).FirstOrDefault();
+                    ctSubgrupo.Descripcion = subgrupo.Descripcion;
+                    ctSubgrupo.CTGrupoId = subgrupo.CTGrupoId;
+                    db.SaveChanges();
+                }
+                catch (System.Exception e)
+                {
+                    logger.Fatal(e.InnerException.Message);
+                }
             }
         }
         #endregion
