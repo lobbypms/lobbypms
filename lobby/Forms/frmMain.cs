@@ -766,7 +766,7 @@ namespace lobby.Forms
             if (dgvInHouse.SelectedRows.Count != 0)
             {
                 DataGridViewRow row = this.dgvInHouse.SelectedRows[0];
-                resvId = Convert.ToInt32(row.Cells["RES_ID"].Value);
+                resvId = Convert.ToInt32(row.Cells["Id"].Value);
 
                 frmModResv formModResv = new frmModResv(resvId);
                 formModResv.ShowDialog();
@@ -783,7 +783,7 @@ namespace lobby.Forms
             if (dgvDepartures.SelectedRows.Count != 0)
             {
                 DataGridViewRow row = this.dgvDepartures.SelectedRows[0];
-                resvId = Convert.ToInt32(row.Cells["RES_ID"].Value);
+                resvId = Convert.ToInt32(row.Cells["Id"].Value);
 
                 frmModResv formModResv = new frmModResv(resvId);
                 formModResv.ShowDialog();
@@ -804,7 +804,7 @@ namespace lobby.Forms
 
                 if (result == DialogResult.OK)
                 {
-                    int resvID = (int)row.Cells["RES_ID"].Value;
+                    int resvID = (int)row.Cells["Id"].Value;
 
                     Reserva reserva = AdminReservas.TraerPorId(resvID);
                     //TODO ver si se puede traer reserva.tarifa.id
