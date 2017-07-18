@@ -87,7 +87,7 @@ namespace lobby.Forms
             paramFields.Add(paramField);
 
             crvReport.ParameterFieldInfo = paramFields;
-            rptRoomNights.Load(@"c:\Users\Gabriel\Google Drive\Lobby PMS\src\lobby\lobby\rptRoomNightsAndRevenue.rpt");
+            rptRoomNights.Load(@"c:\lobby\reports\rptRoomNightsAndRevenue.rpt");
             crvReport.ReportSource = rptRoomNights;
         }
 
@@ -104,7 +104,7 @@ namespace lobby.Forms
             paramFields.Add(paramField);
 
             crvReport.ParameterFieldInfo = paramFields;
-            rptGuestAccount.Load(@"c:\Users\Gabriel\Google Drive\Lobby PMS\src\lobby\lobby\rptGuestAccount.rpt");
+            rptGuestAccount.Load(@"c:\lobby\reports\rptGuestAccount.rpt");
             crvReport.ReportSource = rptGuestAccount;
         }
 
@@ -121,7 +121,7 @@ namespace lobby.Forms
             paramFields.Add(paramField);
 
             crvReport.ParameterFieldInfo = paramFields;
-            rptRegCard.Load(@"c:\Users\Gabriel\Google Drive\Lobby PMS\src\lobby\lobby\rptRegCard.rpt");
+            rptRegCard.Load(@"c:\lobby\reports\rptRegCard.rpt");
             crvReport.ReportSource = rptRegCard;
         }
         private void printRevenueByTCGroup()
@@ -152,7 +152,7 @@ namespace lobby.Forms
             paramFields.Add(paramField);
 
             crvReport.ParameterFieldInfo = paramFields;
-            rptRevenue.Load(@"c:\Users\Gabriel\Google Drive\Lobby PMS\src\lobby\lobby\rptRevenueByCTGroup.rpt");
+            rptRevenue.Load(@"c:\lobby\reports\rptRevenueByCTGroup.rpt");
             crvReport.ReportSource = rptRevenue;
         }
 
@@ -160,7 +160,7 @@ namespace lobby.Forms
         {
             ReportDocument rptDepartures = new ReportDocument();
 
-            rptDepartures.Load(@"c:\Users\Gabriel\Google Drive\Lobby PMS\src\lobby\lobby\rptDepartures.rpt");
+            rptDepartures.Load(@"c:\lobby\reports\rptDepartures.rpt");
 
             ParameterFieldDefinitions crParameterFieldDefinitions;
             ParameterFieldDefinition crParameterFieldDefinition;
@@ -182,7 +182,7 @@ namespace lobby.Forms
         private void printInHouse()
         {
             ReportDocument rptInHouseGuests = new ReportDocument();
-            rptInHouseGuests.Load(@"c:\Users\Gabriel\Google Drive\Lobby PMS\src\lobby\lobby\rptInHouseGuests.rpt");
+            rptInHouseGuests.Load(@"c:\lobby\reports\rptInHouseGuests.rpt");
             crvReport.ReportSource = rptInHouseGuests;
             crvReport.Refresh();
             rptInHouseGuests.Refresh();
@@ -216,7 +216,7 @@ namespace lobby.Forms
             paramFields.Add(paramField);
 
             crvReport.ParameterFieldInfo = paramFields;
-            rptReservations.Load(@"c:\Users\Gabriel\Google Drive\Lobby PMS\src\lobby\lobby\rptReservations.rpt");
+            rptReservations.Load(@"c:\lobby\reports\rptReservations.rpt");
             crvReport.ReportSource = rptReservations;
         }
 
@@ -224,7 +224,7 @@ namespace lobby.Forms
         {
             ReportDocument rptArrivals = new ReportDocument();
 
-            rptArrivals.Load(@"c:\Users\Gabriel\Google Drive\Lobby PMS\src\lobby\lobby\rptArrivals.rpt");
+            rptArrivals.Load(@"c:\lobby\reports\rptArrivals.rpt");
 
             ParameterFieldDefinitions crParameterFieldDefinitions;
             ParameterFieldDefinition crParameterFieldDefinition;
@@ -246,25 +246,23 @@ namespace lobby.Forms
         private void printConfLetter()
         {
             ReportDocument rptConfLetter = new ReportDocument();
-
             ParameterFields paramFields = new ParameterFields();
-
             ParameterField paramField = new ParameterField();
             ParameterDiscreteValue paramDiscreteValue = new ParameterDiscreteValue();
+
             paramField.Name = "resvID";
             paramDiscreteValue.Value = reservationID;
             paramField.CurrentValues.Add(paramDiscreteValue);
             paramFields.Add(paramField);
 
             crvReport.ParameterFieldInfo = paramFields;
-            rptConfLetter.Load(@"c:\Users\Gabriel\Google Drive\Lobby PMS\src\lobby\lobby\rptConfLetter.rpt");
+            rptConfLetter.Load(@"c:\lobby\reports\rptConfLetter.rpt");
 
             rptConfLetter.SetParameterValue(0, reservationID);
 
             System.IO.Directory.CreateDirectory(@"c:\lobby\cartas_confirmacion");
             string auxPath = "c:\\lobby\\cartas_confirmacion\\carta_conf_" + reservationID.ToString() + ".pdf";
             rptConfLetter.ExportToDisk(ExportFormatType.PortableDocFormat, auxPath);
-
 
             crvReport.ReportSource = rptConfLetter;
 

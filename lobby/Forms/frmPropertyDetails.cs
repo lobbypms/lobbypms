@@ -13,27 +13,37 @@ namespace lobby.Forms
         {
             InitializeComponent();
 
-            cmbCountry.DataSource = AdminPaises.TraerTodos();
-            cmbCountry.ValueMember = "Descripcion";
-            cmbCountry.DisplayMember = "Descripcion";
+            cmbPais.DataSource = AdminPaises.TraerTodos();
+            cmbPais.ValueMember = "Descripcion";
+            cmbPais.DisplayMember = "Descripcion";
 
-            var propiedad = AdminPropiedad.TraerTodas();
-            txbName.Text = Properties.Settings.Default.propertyName;
-            txbAddress.Text = Properties.Settings.Default.propertyAddress;
-            txbCity.Text = Properties.Settings.Default.propertyCity;
-            cmbCountry.SelectedIndex = Properties.Settings.Default.propertyCountry - 1;
-            txbPhone.Text = Properties.Settings.Default.propertyPhone;
-            txbEMail.Text = Properties.Settings.Default.propertyEmail;
-            txbResponsible.Text = Properties.Settings.Default.propertyResp;
-            txbExtra.Text = Properties.Settings.Default.propertyExtra;
+            var propiedad = AdminPropiedad.Traer();
+            txbNombre.Text = propiedad.Nombre;
+            txbDireccion.Text = propiedad.Direccion;
+            txbCiudad.Text = propiedad.Ciudad;
+            cmbPais.SelectedIndex = propiedad.PaisId - 1;
+            txbTelefono.Text = propiedad.Telefono;
+            txbEMail.Text = propiedad.Email;
+            txbResponsable.Text = propiedad.Responsable;
+            txbExtra.Text = propiedad.Extra;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            //TODO pensar si se deja en app.config o se manda a DB
-            //hotel.spUpdatePropertyDetails(txbName.Text, txbAddress.Text, txbCity.Text, cmbCountry.SelectedIndex + 1, txbPhone.Text, txbEMail.Text, txbResponsible.Text, txbExtra.Text);
-            //MessageBox.Show("Datos actualizados exitosamente", "Actualizar datos de propiedad", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            //this.Close();
-        }
+            var propiedad = new Propiedad();
+
+            propiedad.Ciudad = txbCiudad.Text;
+            propiedad.Direccion = txbDireccion.Text;
+            propiedad.Email = txbEMail.Text;
+            propiedad.Extra = txbExtra.Text;
+            propiedad.Nombre = txbNombre.Text;
+            propiedad.PaisId = cmbPais.SelectedIndex + 1;
+            propiedad.Responsable = txbResponsable.Text;
+            propiedad.Telefono = txbTelefono.Text;
+
+            AdminPropiedad.Grabar(propiedad);
+            MessageBox.Show("Datos actualizados exitosamente", "Actualizar datos de propiedad", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            Close();
+    }
     }
 }

@@ -28,59 +28,56 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txbName = new System.Windows.Forms.TextBox();
-            this.txbAddress = new System.Windows.Forms.TextBox();
-            this.txbCity = new System.Windows.Forms.TextBox();
-            this.txbPhone = new System.Windows.Forms.TextBox();
+            this.txbNombre = new System.Windows.Forms.TextBox();
+            this.txbDireccion = new System.Windows.Forms.TextBox();
+            this.txbCiudad = new System.Windows.Forms.TextBox();
+            this.txbTelefono = new System.Windows.Forms.TextBox();
             this.txbEMail = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.cmbCountry = new System.Windows.Forms.ComboBox();
+            this.cmbPais = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.txbResponsible = new System.Windows.Forms.TextBox();
+            this.txbResponsable = new System.Windows.Forms.TextBox();
             this.txbExtra = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // txbName
+            // txbNombre
             // 
-            this.txbName.Enabled = false;
-            this.txbName.Location = new System.Drawing.Point(118, 41);
-            this.txbName.Name = "txbName";
-            this.txbName.Size = new System.Drawing.Size(221, 20);
-            this.txbName.TabIndex = 0;
+            this.txbNombre.Enabled = false;
+            this.txbNombre.Location = new System.Drawing.Point(118, 41);
+            this.txbNombre.Name = "txbNombre";
+            this.txbNombre.Size = new System.Drawing.Size(221, 20);
+            this.txbNombre.TabIndex = 0;
             // 
-            // txbAddress
+            // txbDireccion
             // 
-            this.txbAddress.Enabled = false;
-            this.txbAddress.Location = new System.Drawing.Point(118, 83);
-            this.txbAddress.Name = "txbAddress";
-            this.txbAddress.Size = new System.Drawing.Size(221, 20);
-            this.txbAddress.TabIndex = 1;
+            this.txbDireccion.Location = new System.Drawing.Point(118, 83);
+            this.txbDireccion.Name = "txbDireccion";
+            this.txbDireccion.Size = new System.Drawing.Size(221, 20);
+            this.txbDireccion.TabIndex = 1;
             // 
-            // txbCity
+            // txbCiudad
             // 
-            this.txbCity.Enabled = false;
-            this.txbCity.Location = new System.Drawing.Point(118, 126);
-            this.txbCity.Name = "txbCity";
-            this.txbCity.Size = new System.Drawing.Size(221, 20);
-            this.txbCity.TabIndex = 2;
+            this.txbCiudad.Location = new System.Drawing.Point(118, 126);
+            this.txbCiudad.Name = "txbCiudad";
+            this.txbCiudad.Size = new System.Drawing.Size(221, 20);
+            this.txbCiudad.TabIndex = 2;
             // 
-            // txbPhone
+            // txbTelefono
             // 
-            this.txbPhone.Enabled = false;
-            this.txbPhone.Location = new System.Drawing.Point(118, 219);
-            this.txbPhone.Name = "txbPhone";
-            this.txbPhone.Size = new System.Drawing.Size(221, 20);
-            this.txbPhone.TabIndex = 4;
+            this.txbTelefono.Location = new System.Drawing.Point(118, 219);
+            this.txbTelefono.Name = "txbTelefono";
+            this.txbTelefono.Size = new System.Drawing.Size(221, 20);
+            this.txbTelefono.TabIndex = 4;
             // 
             // txbEMail
             // 
-            this.txbEMail.Enabled = false;
             this.txbEMail.Location = new System.Drawing.Point(118, 263);
             this.txbEMail.Name = "txbEMail";
             this.txbEMail.Size = new System.Drawing.Size(221, 20);
@@ -131,15 +128,14 @@
             this.label5.TabIndex = 9;
             this.label5.Text = "e-Mail";
             // 
-            // cmbCountry
+            // cmbPais
             // 
-            this.cmbCountry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCountry.Enabled = false;
-            this.cmbCountry.FormattingEnabled = true;
-            this.cmbCountry.Location = new System.Drawing.Point(118, 172);
-            this.cmbCountry.Name = "cmbCountry";
-            this.cmbCountry.Size = new System.Drawing.Size(221, 21);
-            this.cmbCountry.TabIndex = 3;
+            this.cmbPais.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPais.FormattingEnabled = true;
+            this.cmbPais.Location = new System.Drawing.Point(118, 172);
+            this.cmbPais.Name = "cmbPais";
+            this.cmbPais.Size = new System.Drawing.Size(221, 21);
+            this.cmbPais.TabIndex = 3;
             // 
             // label6
             // 
@@ -159,17 +155,15 @@
             this.label7.TabIndex = 12;
             this.label7.Text = "Responsable";
             // 
-            // txbResponsible
+            // txbResponsable
             // 
-            this.txbResponsible.Enabled = false;
-            this.txbResponsible.Location = new System.Drawing.Point(118, 308);
-            this.txbResponsible.Name = "txbResponsible";
-            this.txbResponsible.Size = new System.Drawing.Size(221, 20);
-            this.txbResponsible.TabIndex = 6;
+            this.txbResponsable.Location = new System.Drawing.Point(118, 308);
+            this.txbResponsable.Name = "txbResponsable";
+            this.txbResponsable.Size = new System.Drawing.Size(221, 20);
+            this.txbResponsable.TabIndex = 6;
             // 
             // txbExtra
             // 
-            this.txbExtra.Enabled = false;
             this.txbExtra.Location = new System.Drawing.Point(118, 353);
             this.txbExtra.Name = "txbExtra";
             this.txbExtra.Size = new System.Drawing.Size(221, 20);
@@ -184,27 +178,38 @@
             this.label8.TabIndex = 15;
             this.label8.Text = "Extra";
             // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(56, 409);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(283, 23);
+            this.btnSave.TabIndex = 8;
+            this.btnSave.Text = "Guardar";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
             // frmPropertyDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(385, 414);
+            this.ClientSize = new System.Drawing.Size(385, 444);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txbExtra);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.txbResponsible);
+            this.Controls.Add(this.txbResponsable);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.cmbCountry);
+            this.Controls.Add(this.cmbPais);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txbEMail);
-            this.Controls.Add(this.txbPhone);
-            this.Controls.Add(this.txbCity);
-            this.Controls.Add(this.txbAddress);
-            this.Controls.Add(this.txbName);
+            this.Controls.Add(this.txbTelefono);
+            this.Controls.Add(this.txbCiudad);
+            this.Controls.Add(this.txbDireccion);
+            this.Controls.Add(this.txbNombre);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -219,21 +224,22 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txbName;
-        private System.Windows.Forms.TextBox txbAddress;
-        private System.Windows.Forms.TextBox txbCity;
-        private System.Windows.Forms.TextBox txbPhone;
+        private System.Windows.Forms.TextBox txbNombre;
+        private System.Windows.Forms.TextBox txbDireccion;
+        private System.Windows.Forms.TextBox txbCiudad;
+        private System.Windows.Forms.TextBox txbTelefono;
         private System.Windows.Forms.TextBox txbEMail;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox cmbCountry;
+        private System.Windows.Forms.ComboBox cmbPais;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox txbResponsible;
+        private System.Windows.Forms.TextBox txbResponsable;
         private System.Windows.Forms.TextBox txbExtra;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btnSave;
     }
 }

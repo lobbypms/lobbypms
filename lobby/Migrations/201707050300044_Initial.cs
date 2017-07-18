@@ -267,7 +267,9 @@ namespace lobby.Migrations
                 .PrimaryKey(t => t.Nombre)
                 .ForeignKey("dbo.Paises", t => t.PaisId, cascadeDelete: true)
                 .Index(t => t.PaisId);
-            
+
+            Sql("INSERT [dbo].[Propiedad] ([Nombre], [Direccion], [Ciudad], [PaisId], [Telefono], [Email], [Responsable], [Extra]) VALUES ('Propiedad DEMO', 'Dirección de pruebas 1234', 'Buenos Aires', 13, '(011)4949-7878', 'info@lobbypms.com.ar', 'Gabriel Lopardo', 'Actualizar datos reales')");
+
             CreateTable(
                 "dbo.ReservasNoches",
                 c => new

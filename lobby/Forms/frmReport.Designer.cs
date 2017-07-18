@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            //TODO seguir, corregir reportes
             this.crvReport = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
             this.SuspendLayout();
             // 

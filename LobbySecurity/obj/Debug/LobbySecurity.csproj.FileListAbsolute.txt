@@ -1,4 +1,0 @@
-C:\Users\glopardo\Google Drive\Lobby PMS\src\lobbypms\LobbySecurity\bin\Debug\LobbySecurity.dll
-C:\Users\glopardo\Google Drive\Lobby PMS\src\lobbypms\LobbySecurity\bin\Debug\LobbySecurity.pdb
-C:\Users\glopardo\Google Drive\Lobby PMS\src\lobbypms\LobbySecurity\obj\Debug\LobbySecurity.dll
-C:\Users\glopardo\Google Drive\Lobby PMS\src\lobbypms\LobbySecurity\obj\Debug\LobbySecurity.pdb

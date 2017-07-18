@@ -799,15 +799,17 @@ namespace lobby.Forms
             if (dgvInHouse.SelectedRows.Count != 0)
             {
                 DataGridViewRow row = this.dgvInHouse.SelectedRows[0];
+                int reservaId = (int)row.Cells["Id"].Value;
+                Perfil perfil = AdminPerfiles.TraerPorIdReserva(reservaId);
+                string huesped = perfil.Nombre + " " + perfil.Apellido;
 
-                DialogResult result = MessageBox.Show("¿Desea dar check-out adelantado al huésped " + row.Cells["HUESPED"].Value.ToString() + "?", "Check-in huésped", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show("¿Desea dar check-out adelantado al huésped " + huesped + "?", "Check-out adelantado", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
                 if (result == DialogResult.OK)
                 {
-                    int resvID = (int)row.Cells["Id"].Value;
+                    int resvID = reservaId;
 
                     Reserva reserva = AdminReservas.TraerPorId(resvID);
-                    //TODO ver si se puede traer reserva.tarifa.id
                     Tarifa tarifa = AdminTarifas.TraerPorId(reserva.TarifaID);
 
                     int roomID = reserva.HabitacionID.Value;

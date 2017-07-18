@@ -50,6 +50,7 @@ namespace lobby.Admin
                 try
                 {
                     Reserva reserva = db.Reservas.Where(r => r.Id == resvId).FirstOrDefault();
+                    reserva.FechaSalida = DateTime.Today.Date;
                     reserva.Status = 0;
                     reserva.HabitacionID = null;
 

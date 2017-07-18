@@ -43,15 +43,6 @@ namespace lobby.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool sendConfEmail {
-            get {
-                return ((bool)(this["sendConfEmail"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Gabriel")]
         public string propertyCode {
             get {
@@ -61,73 +52,10 @@ namespace lobby.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Propiedad de pruebas")]
-        public string propertyName {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool sendConfEmail {
             get {
-                return ((string)(this["propertyName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Direccion pruebas")]
-        public string propertyAddress {
-            get {
-                return ((string)(this["propertyAddress"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Ciudad pruebas")]
-        public string propertyCity {
-            get {
-                return ((string)(this["propertyCity"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("13")]
-        public int propertyCountry {
-            get {
-                return ((int)(this["propertyCountry"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("123456789")]
-        public string propertyPhone {
-            get {
-                return ((string)(this["propertyPhone"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("email@pruebas.com")]
-        public string propertyEmail {
-            get {
-                return ((string)(this["propertyEmail"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Gabriel Responsable")]
-        public string propertyResp {
-            get {
-                return ((string)(this["propertyResp"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Extra pruebas")]
-        public string propertyExtra {
-            get {
-                return ((string)(this["propertyExtra"]));
+                return ((bool)(this["sendConfEmail"]));
             }
         }
     }
